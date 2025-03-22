@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR View</title>
+    <link rel="stylesheet" href="styleView.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>    
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/jeromeetienne/AR.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+
+    <div id="overlay"></div>
+
+    <a-scene embedded arjs="debugUIEnabled: false" vr-mode-ui="enabled: false">
+        <a-marker-camera preset="custom"></a-marker-camera>
+        <a-entity id="arContent"></a-entity>
+        <a-light type="directional" intensity="0.8" position="1 1 1"></a-light>
+    </a-scene>
+
+    <button id="closeButton">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAV1JREFUSEvtlb1KxEAUhb+jVnb2PoPgG4goirJoYSEKlrZa+EAWaiEiInY2omCjqK/iD/5gcc0Ns7DIbmY2CcYi04VM7nfPmTM3oqGlhri04D9zvrX6/1htZhPAGbAj6amoMzObB3aBVUnfRXsLz9jMRoBHYAp4BmYlPfQraGadbN8pMAZcSPLngSsaLjPbAvYhv/MvwJyku96KZrYcXHHoF9CRdFkJ7B//gr8F5Tm8D3RR0lUsLFHF3QJmtg4cBeU5HJgEjoO9H8BSCtRrJoODug3gMDTj8HHAc/AJLEi6jintvh8KHOCu/AAYDUVcqZ/7bSp0aMWNgc1sM6j1Hnqtfgc8VDepqpOtTgiXX6OkRCdb3ch1KjlAospTRuY9MA28AjOJI/Nc0kqlyRV+EidZmPayYj63B64wxbaBtUo/idSEltmXnOoyxStZXTew9Misq5HW6rqcjNZpzOofTLGEHzIu/6MAAAAASUVORK5CYII="/>
+    </button>
+    
+    <script src="scriptView.js"></script>
+</body>
+</html>

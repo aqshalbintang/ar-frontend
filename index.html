@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Platform</title>
+    <link rel="stylesheet" href="styleIndex.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+</head>
+
+<body>
+    <div id="particles-js"></div>
+    <nav>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <img
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAINJREFUWEftlcEKwCAMQ+2f78/rDtvN+WBBaCFeQ0t9TTRGsRPF5hkeiDZiQiZEBEjv46HMTLqNokfEEsYnIQ/04O7jIcUfSq0JEb1dyi4qVvQ79cv+jv1L9c/DWGtlij+UWsee6PUh5N+efvtyhMh8p/Q+pj5FgPqakAkRAdLtISI0ATe+KCUzK5DNAAAAAElFTkSuQmCC" />
+        </div>
+        <div class="nav-links" id="nav-links">
+            <a href="#viewHome">Home</a>
+            <a href="#viewPanduan">Panduan</a>
+            <a href="#viewFAQ">FAQ</a>
+            <button class="login-btn">Admin</button>
+        </div>
+    </nav>
+
+    <div id="viewHome" class="container">
+        <div class="text-container">
+            <h1 id="typing-text"></h1>
+            <p>Rasakan pengalaman teknologi Augmented Reality. Jelajahi inovasi terbaru kami yang menghadirkan objek
+                multimedia secara nyata di dunia digital melalui AR Platform.</p>
+            <a href="#" class="btn" id="formRegistrasi">GET STARTED</a>
+        </div>
+        <div class="image-container" class="slide">
+            <img src="img\augmented-reality.png" alt="Augmented Reality Illustration">
+        </div>
+    </div>
+
+    <div id="userFormRegistrasi">
+        <div class="modal-content">
+            <h2>Registrasi</h2>
+            <p>Nama :</p>
+            <input type="text" id="name" placeholder="Masukkan nama" required><br>
+            <p>Email :</p>
+            <input type="text" id="email" placeholder="Masukkan email" required><br>
+            <p>Tanggal Lahir :</p>
+            <input type="date" id="birthDate" placeholder="Tanggal Lahir" required><br>
+            <p>Nomor HP :</p>
+            <input type="tel" id="phone" placeholder="Masukkan nomor HP" required><br>
+            <button id="submitFormRegistrasi">Submit</button>
+            <button id="closeModalRegistrasi">Batal</button></br>
+            <span>Jika anda sudah pernah registrasi dengan email yang sama, silahkan login <a href="#" id="formLogin">disini</a></span>
+        </div>
+    </div>
+
+    <div id="userFormLogin">
+        <div class="modal-content">
+            <h2>Login</h2>
+            <p>Email :</p>
+            <input type="text" id="emailLogin" placeholder="Masukkan email" required><br>
+            <button id="submitFormLogin">Submit</button>
+            <button id="closeModalLogin">Batal</button></br>
+            <span>Belum pernah registrasi dengan email ? Silahkan registrasi <a href="#" id="openMoreFormRegistrasi">disini</a></span>
+        </div>
+    </div>
+
+    <div class="wrapper">
+    <div class="count-container">
+        <p class="counter">Visitors <span id="visitorCount">0</span></p>
+        <div class="divider"></div>
+        <p class="counter">Markers <span id="markerCount">0</span></p>
+    </div>
+</div>
+
+    <div id="viewPanduan" class="panduan-container">
+        <h2>Panduan Penggunaan</h2>
+        <div class="panduan">
+            <div class="step">
+                <img
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGkAAABpCAYAAAA5gg06AAAAAXNSR0IArs4c6QAABAhJREFUeF7tnT1v1EAQhmc6CiTSIAoaKJAQQiIddEBJRwNtqBH/AfgR6aFFFPALEjpEFSSQ6IASaNKA6AZbd+RyJ9u7Xu/u7VpP2uzH+H3mXc/646zCX/EKaPEREqAAqYIkABKQKlCgghBxEpAqUKCCEHHSHCCZ2Y6I7OY4FlU9zDGPzxxmdsenXYQ2R6p6PDSO00nLYA8iBOMzxFlV/e3TMHUbM7PUcyzHv+tKTiD1kABSf4ripA5tcBJOGr2q4ySc5J80nJM4J51WgOrO3zvrLefopHciMnkjqqrPQkWN3a/ZJsWIpd0Q33bEls1Jz0sSODaw0PGWoJ8CKVTBDP2AlEHkqVMAaaqCGfoXDcnMLonI1ww6tFNcVtVvfXNtMxYgragAyfNWxVp1t83s3XTUNmPBSThppQBOGnVmXVt6cRJOwkmj/NOTMDgJJ2Vx0g8R+eLI2KsicsHRJkYJniSWOTjpZbMJfTQEoCmfXzSb4r0MkJLEAqS4yx2QepyQRJjAzWySWHASTgosQJfdPC/FJMnekpw0TcVVb+dzdyETASlEtf4+QFpok8XVoeiABKTB3PnYvFLzxpFd90XkRoZ9UpZYanRSaMyb/WJcccgSS+gk21zuQmMGUgzlPKu7GFO1Y+CkECWBFKJamSV4rCPBSSFK4qQQ1XBSEc8AhqKjugtVrrvf4NIbOlUqSGdE5FZoUCP7vVfVv319zKyYWEYe10nzJJBCg6FftwJAqiAzgASkChSoIEScBKQKFKggRJwEpAoUqCDEJE4q7NrdeRH56WDxWlUfDLUxs/1mnMeOca4343yOzR1IC0WBFDuzNsZz3arASV0AWO7ipiXLHctd3IzqGY3lLkRmlrsQ1fr7sNyx3A1mVJJXIDdnNLNzIvLWkduf2jLc0eaeiNx0tNlT1e9xfSRpvp/kudwV85C8mbUb2VcOcZ+oaruhzf63zeUOSJ64gSQiOKk/W3BSLCcl/G2h2UPixeZVFk5+1i3VcgckIK0UYLk70WJ0CT4HJxXzCqSZXRORh47zePvRK1c1vK+qv/6PMwdInrWNs9nkc5JzhkWZPvrOLJAinpOA5KPAtDY4KWHhMA0NTspS3QFpocB2vvrieRUcSECKlQOLcajupulJ4RBYOFT/CuRm3pjZFRG56MinD6r6p4rN7DRjzKd30ZvZ+cg87UiANE2/LL1Lg8TXMbuxF/V1zFiZyWe1O5R0XXpv9wdtNhzEouAYB0hA8k+1OX6x2f/oh1viJJzkn0s4qV8rnISTcJK/AjjptAJR7iftND+yvhuDgGsMVT10tcn1/+XWI8d0R6p6PDSRc5+UI0rmGFYASBVkCJCAVIECFYSIk4BUgQIVhIiTgFSBAhWE+A96nuemCT7dRwAAAABJRU5ErkJggg==" />
+                <h2>Scan Barcode</h2>
+                <p>Arahkan kamera AR ke barcode yang telah disediakan oleh sistem AR Platform.</p>
+            </div>
+            <div class="step">
+                <img
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGkAAABpCAYAAAA5gg06AAAAAXNSR0IArs4c6QAABOtJREFUeF7tnburHVUUxr9PBN8WPlEEExW1iAqxSSw0AQUTAoIQxVcjIlgFm5DCQoliJCHoX2CjRjsrBQs1BDEQULFIjIUo1laiQRCXZ8G5enK5mb3nzMyevc58Gy5c2PvMfGv9Zs2a/Zg9hEr1HmD1CiUQghTgIhAkQQrggQASFUmCFMADASQqkgQp3wNmdgeAW/J/EaLlXwC+I3mui9pRI8nMXgSwB8A2ANd3MaTy334L4ASAIyR/bat1FEhmdi+AdwFsbSs4eHuPqIMADpP8O9eW4pDM7AkAH+UKXNF235C8P9e2opDM7CYAPwC4OlfgCrd7i+SBHPtKQ/oCwI4cYRNo84/nYpKnUrYWg2RmdwM4kxI0sfpjJJ9O2VwS0jMA3ksJmlj9WZJ+8TaWkpCOAng5JWiC9VeQ/LPJ7pKQPgPwyAQhpEzeTvJkLZC+BPBQSvEE63eSdN9csJSMJEHaGIMgBYhMQRKkFh4wM93udLtrccXU1VS3u7p4bKhGkASphQcGzElvA3hhNqF2ZQs5NTWtKpKGGgHfBMAn094A8DyAi2oikKGlKkhDPd1tJvmzO8PM7gPwTrCRjWlBWrtqzexxn6IGcFvGlTx2k2lCmkfVJQD2AXgFwFVjk2g4/3QhLUTVDZXnK0FagFVrvhKk9beZCvOVIG2UC8yspnzVHdKsE+qre7yP01ReI/lqU4MBO7P/PYK3fTgwsxrylSDlgBu5fyVIOZBG7l8JUhtII/WvBKktpBH6V4K0LKSC/StB6gqpQL4SpL4gDZivBKlPSAtRdeP8JbhdPRxfkHpw4nmHMDMfUfeRdR9h95GLrkWQunpwIXp8xtdnfl8H4JHUVxGkPjxpZr6G3Wd8fSS97yJIXTxqZj6z6zO8PtM7VBGkZTw7QN5pkiFIbSCZ2VB5R5DWVgu1AbK+7cB5R5C6QCqUdwRpGUiF844gtYE0Ut4RpFxII+YdQUpBqiDvCNKFIFWUdwRpPaQK844gLUKqNO8IkkOqPO+EgTTUS2T3AHgOwP4uIw4j/nYHyeNN50/uiBJgBevvlb/akuI/iQHWlBNqrxek2gkBECRB+t8DY75VEYBDo0RFUgCCgiRIut31cQ0okvrw4sDHqArSh7N9wZ8c2OCIh79rtjf4j7WMOPiW/29G9OKAms+RvDx1/JLDQo8C+DQlaGL1J0g+mLK5JCRf3H46yH4/Kb/1Vf8syfdTBysGyYWY2U4An6dETaT+a5IP5NhaFNIc1AcAnsoRt8Jt/ANXW0iezbFxDEjXATgG4OEcgSvY5g/f6XL2IRF/2s0qxSHNo8nP6y9hHerpRawsYyto5N9K2kvylzZaRoG0JtDMbp/lKH+6uXP+d20b8QHa+m3tJwDeDzpN8pNlNI8KaRnBU/yNIAWgLkiCFMADASQqkgQpgAcCSFQkCVIADwSQmBNJPgj4VcIWXybb+PHAAL44T2JqT9mS9uRAugbAbyVF1XAuzijVoMM1ZAkxM/9gx621iC6hIyKkjwE8VsI5tZwjIiTfG9wn67IirxZHd9ERDpIba2aT+nZ5SEhzUN8D8Je2Vr5EhnQpAI+ol1adUlhIa2DMbPfsf/82xRYAl60isPCQFqGY2c3zZVoXrxIsktV0zifztBb5AhKkAPQESZACeCCAREWSIAXwQACJiiRBCuCBABL/BYrqQpfgdOdGAAAAAElFTkSuQmCC" />
+                <h2>Tampilkan Objek</h2>
+                <p>Setelah barcode discan, objek berupa gambar atau video akan ditampilkan secara otomatis dan
+                    real-time.
+                </p>
+            </div>
+            <div class="step">
+                <img
+                    src="data:image/png;base64,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" />
+                <h2>Jelajahi AR</h2>
+                <p>Interaksikan objek dalam lingkungan nyata melalui teknologi AR untuk pengalaman yang menarik.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewFAQ" class="faq-container">
+        <div>
+            <h2>Frequently Asked Questions</h2>
+
+            <div>
+                <button class="button">
+                    Apa pengertian dari Augmented Reality?
+                </button>
+                <p>Augmented Reality adalah teknologi yang menggabungkan benda maya dua dimensi dan ataupun tiga dimensi
+                    ke dalam sebuah lingkungan nyata tiga dimensi lalu memproyeksikan benda-benda maya tersebut dalam
+                    waktu nyata (real time) (Putra, 2012).</p>
+            </div>
+
+            <div>
+                <button class="button">
+                    Bagaimana cara kerja Augmented Reality?
+                </button>
+                <p>Augmented Reality bekerja dengan menggunakan kamera untuk mengenali objek atau marker, lalu
+                    menampilkan elemen
+                    digital di atas yang sesuai dengan sistemnya.</p>
+            </div>
+
+            <div>
+                <button class="button">
+                    Apa itu AR Platform?
+                </button>
+                <p>AR Platform adalah sebuah platform online yang dapat memberikan pengalaman menggunakan Augmented
+                    Reality secara gratis.</p>
+            </div>
+
+            <div>
+                <button class="button">
+                    Objek yang akan ditampilkan AR Platform?
+                </button>
+                <p>Untuk saat ini AR Platform dapat menampilkan media interaktif berupa gambar atau video yang dapat
+                    diputar secara real-time.</p>
+            </div>
+
+            <div>
+                <button class="button">
+                    Bagaimana langkah-langkah menggunakan AR Platform?
+                </button>
+                <p>Langkah pertama, pengguna dapat menekan <span style="font-weight:bold;">GET STARTED</span> yang ada
+                    di <a href="#viewHome">Home</a>.</br>
+                    Langkah kedua, pengguna mengisi data diri seperti Nama, Umur, No HP, dan Alamat.</br>
+                    Langkah ketiga, pengguna dapat melakukan scan menggunakan camera AR.</br>
+                    Langkah keempat, AR Platform akan menampilkan objek berupa gambar atau video yang ada di
+                    sistem.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>AR Platform &copy;2025</p>
+    </footer>
+    <script src="scriptIndex.js"></script>
+</body>
+
+</html>

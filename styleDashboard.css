@@ -1,0 +1,36 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #e9e9e9;
+    margin: 0;
+}
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 10px;
+}
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+#logoutBtn {
+    background-color: #f63b3b;
+}
+#logoutBtn:hover {
+    background-color: #eb2525;
+}
+#kameraBtn {
+    background-color: #3b82f6;
+}
+#kameraBtn:hover {
+    background-color: #2563eb;
+}
