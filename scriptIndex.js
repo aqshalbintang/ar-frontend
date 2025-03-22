@@ -169,7 +169,7 @@ document.getElementById("submitFormRegistrasi").addEventListener("click", functi
         return;
     }
 
-    fetch("http://localhost:8080/api/visitors", {
+    fetch(`${apiUrl}api/visitors`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, birthDate, phone })
@@ -207,7 +207,7 @@ document.getElementById("submitFormLogin").addEventListener("click", function(ev
         return;
     }
 
-    fetch("http://localhost:8080/api/login", {
+    fetch(`${apiUrl}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
