@@ -1,3 +1,11 @@
+const apiUrl = window.env.API_URL;
+
+fetch(`${apiUrl}/api/data`)
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error("Error fetching API:", error));
+
+
 particlesJS('particles-js', {
     particles: {
         number: {
