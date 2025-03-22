@@ -169,7 +169,7 @@ document.getElementById("submitFormRegistrasi").addEventListener("click", functi
         return;
     }
 
-    fetch(`${apiUrl}api/visitors`, {
+    fetch(`${apiUrl}/api/visitors`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, birthDate, phone })
