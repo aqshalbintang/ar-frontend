@@ -1,3 +1,5 @@
+const apiUrl = "https://ar-backend-production.up.railway.app";
+
 document.getElementById("loginForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const username = document.getElementById("username").value;
