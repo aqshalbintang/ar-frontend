@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 async function loadMarkers() {
     try {
-        const response = await fetch("http://localhost:8080/api/targets");
+        const response = await fetch(`${apiUrl}/api/targets`);
         const targets = await response.json();
         const scene = document.querySelector("a-scene");
 
