@@ -242,7 +242,7 @@ const text = "AR Platform";
 let index = 0;
 
 function typeEffect() {
-  const typingText = document.getElementById("typing-text");
+  const typingText = document.getElementById("#typing-text");
   if (index < text.length) {
     typingText.innerHTML += text.charAt(index);
     index++;
