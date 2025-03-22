@@ -1,10 +1,4 @@
-const apiUrl = window.env.API_URL;
-
-fetch(`${apiUrl}/api/data`)
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error("Error fetching API:", error));
-
+const apiUrl = "https://ar-backend-production.up.railway.app";
 
 particlesJS('particles-js', {
     particles: {
@@ -88,7 +82,7 @@ particlesJS('particles-js', {
 
 async function fetchVisitors() {
     try {
-        const response = await fetch('http://localhost:8080/api/totalvisitors');
+        const response = await fetch(`${apiUrl}/api/totalvisitors`);
         const data = await response.json();
         document.getElementById('visitorCount').innerText = data.visitors;
     } catch (error) {
@@ -98,7 +92,7 @@ async function fetchVisitors() {
 
 async function fetchMarkers() {
     try {
-        const response = await fetch('http://localhost:8080/api/totalmarkers');
+        const response = await fetch(`${apiUrl}/api/totalmarkers`);
         const data = await response.json();
         document.getElementById('markerCount').innerText = data.markers;
     } catch (error) {
