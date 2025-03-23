@@ -12,13 +12,7 @@ let toggleBtn = document.querySelector("#btn");
 
 toggleBtn.addEventListener("click", () => {
     sidebar.classList.toggle("closed");
-    menuBtnChange();
 });
-
-// function toggleSubmenu() {
-//     let markerMenu = document.querySelector('.marker-menu');
-//     markerMenu.classList.toggle('active');
-// }
 
 function toggleSubmenu(event) {
     event.preventDefault();
