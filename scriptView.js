@@ -39,8 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const aspectRatio = video.videoWidth / video.videoHeight;
             object = document.createElement("a-video");
             object.setAttribute("src", objectUrl);
-            object.setAttribute("width", "1.5");
-            object.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
+            object.setAttribute("width", "1");
+            object.setAttribute("height", (1 / aspectRatio).toFixed(2));
             object.setAttribute("position", "0 1.2 -3");
             arContent.appendChild(object);
 
@@ -63,8 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const aspectRatio = img.naturalWidth / img.naturalHeight;
             object = document.createElement("a-image");
             object.setAttribute("src", objectUrl);
-            object.setAttribute("width", "1.5");
-            object.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
+            object.setAttribute("width", "1");
+            object.setAttribute("height", (1 / aspectRatio).toFixed(2));
             object.setAttribute("position", "0 1.2 -3");
             arContent.appendChild(object);
         };
