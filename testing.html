@@ -68,13 +68,19 @@ async function loadMarkers() {
                 marker.dataset.arType = target.objectUrl.split(".").pop().toLowerCase();
 
                 marker.addEventListener("markerFound", () => {
-                    if (!localStorage.getItem("arScanned")) { // Cegah scan ulang
+                    if (!localStorage.getItem("arScanned")) {
                         localStorage.setItem("arScanned", "true");
                         localStorage.setItem("arObjectUrl", marker.dataset.objectUrl);
                         localStorage.setItem("arType", marker.dataset.arType);
 
+                        console.log("✅ Marker ditemukan:", marker.dataset.objectUrl);
                         showPage("viewPage");
-                        setTimeout(loadARContent, 500); // Tunggu sejenak agar A-Frame siap
+
+                        // Tunggu scene siap, lalu muat AR
+                        setTimeout(() => {
+                            console.log("⏳ Loading AR Content...");
+                            loadARContent();
+                        }, 1000);
                     }
                 });
 
@@ -83,21 +89,21 @@ async function loadMarkers() {
         });
 
     } catch (error) {
-        console.error("Gagal mengambil data marker:", error);
+        console.error("❌ Gagal mengambil data marker:", error);
     }
 }
 
 function loadARContent() {
     const arContent = document.getElementById("arContent");
-    arContent.innerHTML = ""; // Bersihkan konten sebelumnya
+    arContent.innerHTML = ""; // Bersihkan sebelumnya
 
     const objectUrl = localStorage.getItem("arObjectUrl");
     const arType = localStorage.getItem("arType");
 
-    console.log("Memuat AR Content:", objectUrl, arType);
+    console.log("📌 Data yang di-load:", { objectUrl, arType });
 
     if (!objectUrl || !arType) {
-        console.error("Data AR tidak ditemukan!");
+        console.error("❌ Data AR tidak ditemukan!");
         return;
     }
 
@@ -110,17 +116,26 @@ function loadARContent() {
         object.setAttribute("position", "0 1.2 -3");
         object.setAttribute("autoplay", "true");
         object.setAttribute("loop", "true");
+        console.log("🎥 Video AR ditambahkan.");
     } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
         object = document.createElement("a-image");
         object.setAttribute("src", objectUrl);
         object.setAttribute("width", "1");
         object.setAttribute("height", "0.56");
         object.setAttribute("position", "0 1.2 -3");
+        console.log("🖼️ Gambar AR ditambahkan.");
+    } else {
+        console.error("❌ Format tidak dikenali:", arType);
+        return;
     }
 
-    if (object) {
-        console.log("Menambahkan objek ke AR Content");
-        arContent.appendChild(object);
+    // Pastikan objek ditampilkan di scene yang benar
+    const scene = document.querySelector("#viewPage a-scene");
+    if (scene) {
+        console.log("✅ Scene ditemukan, menambahkan objek...");
+        scene.appendChild(object);
+    } else {
+        console.error("❌ Scene tidak ditemukan di viewPage!");
     }
 }
 
@@ -140,7 +155,6 @@ document.getElementById("backButton").addEventListener("click", () => {
 document.getElementById("closeButton").addEventListener("click", () => {
     showPage("cameraPage");
 });
-
     </script>
 
 </body>
