@@ -1,4 +1,4 @@
-const apiUrl = "https://ar-backend-production.up.railway.app";
+const apiUrl = "https://ar-frontend-six.vercel.app";
 
 document.addEventListener("DOMContentLoaded", function() {
     const token = localStorage.getItem("token");
