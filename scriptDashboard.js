@@ -6,7 +6,7 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
 });
 
 document.getElementById('kameraBtn').addEventListener('click', function() {
-    window.location.href = '/camera.html';
+    window.location.href = '/testing.html';
 });
 
 const formatBirthDate = (dateString) => {

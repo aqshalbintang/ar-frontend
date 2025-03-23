@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/jeromeetienne/AR.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+    
+    <!-- Halaman Camera -->
+    <div id="cameraPage">
+        <a-scene embedded arjs="debugUIEnabled: false" vr-mode-ui="enabled: false">
+            <a-marker preset="custom"></a-marker>
+        </a-scene>
+        <a-entity camera></a-entity>
+
+        <button id="backButton">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhE..." />
+        </button>
+    </div>
+
+    <!-- Halaman View -->
+    <div id="viewPage" style="display: none;">
+        <div id="overlay"></div>
+        <a-scene embedded arjs="debugUIEnabled: false" vr-mode-ui="enabled: false">
+            <a-marker-camera preset="custom"></a-marker-camera>
+            <a-entity id="arContent"></a-entity>
+            <a-light type="directional" intensity="0.8" position="1 1 1"></a-light>
+        </a-scene>
+        <button id="closeButton">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhE..." />
+        </button>
+    </div>
+
+    <script>
+        const apiUrl = "https://ar-backend-production.up.railway.app";
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                alert("Silahkan registrasi atau login dahulu");
+                window.location.href = "/";
+            }
+            loadMarkers();
+        });
+
+        async function loadMarkers() {
+            try {
+                const response = await fetch(`${apiUrl}/api/targets`);
+                const targets = await response.json();
+                const scene = document.querySelector("#cameraPage a-scene");
+
+                targets.forEach(target => {
+                    if (target.patternFileUrl && target.objectUrl) {
+                        const marker = document.createElement("a-marker");
+                        marker.setAttribute("type", "pattern");
+                        marker.setAttribute("url", target.patternFileUrl);
+
+                        marker.addEventListener("markerFound", () => {
+                            localStorage.setItem("arObjectUrl", target.objectUrl);
+                            localStorage.setItem("arType", target.objectUrl.split(".").pop().toLowerCase());
+                            showPage('viewPage');
+                            loadARContent();
+                        });
+
+                        scene.appendChild(marker);
+                    }
+                });
+
+            } catch (error) {
+                console.error("Gagal mengambil data marker:", error);
+            }
+        }
+
+        function loadARContent() {
+            const arContent = document.getElementById("arContent");
+            arContent.innerHTML = "";
+            const objectUrl = localStorage.getItem("arObjectUrl");
+            const arType = localStorage.getItem("arType");
+
+            if (!objectUrl || !arType) {
+                console.error("Data AR tidak ditemukan!");
+                return;
+            }
+
+            let object;
+            if (["mp4", "webm", "ogg"].includes(arType)) {
+                object = document.createElement("a-video");
+                object.setAttribute("src", objectUrl);
+                object.setAttribute("width", "1");
+                object.setAttribute("height", "0.56");
+                object.setAttribute("position", "0 1.2 -3");
+            } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
+                object = document.createElement("a-image");
+                object.setAttribute("src", objectUrl);
+                object.setAttribute("width", "1");
+                object.setAttribute("height", "0.56");
+                object.setAttribute("position", "0 1.2 -3");
+            }
+            arContent.appendChild(object);
+        }
+
+        function showPage(pageId) {
+            document.getElementById("cameraPage").style.display = pageId === "cameraPage" ? "block" : "none";
+            document.getElementById("viewPage").style.display = pageId === "viewPage" ? "block" : "none";
+        }
+
+        document.getElementById("backButton").addEventListener("click", () => {
+            window.location.href = "/dashboard.html";
+        });
+
+        document.getElementById("closeButton").addEventListener("click", () => {
+            showPage("cameraPage");
+        });
+
+    </script>
+
+</body>
+</html>
