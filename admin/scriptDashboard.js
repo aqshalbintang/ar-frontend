@@ -5,7 +5,7 @@ const rowsPerPage = 5;
 const rowsPerPageVisitor = 10;
 let totalMarker = [];
 let totalVisitors = [];
-const apiUrl = "https://ar-frontend-six.vercel.app";
+const apiUrl = "https://ar-backend-production.up.railway.app";
 
 let sidebar = document.querySelector(".sidebar");
 let toggleBtn = document.querySelector("#btn");
