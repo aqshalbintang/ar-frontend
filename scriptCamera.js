@@ -9,6 +9,21 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    if (!localStorage.getItem("cameraAccess")) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                console.log("Akses kamera diberikan");
+                localStorage.setItem("cameraAccess", "granted");
+            })
+            .catch(error => {
+                console.error("Akses kamera ditolak:", error);
+            });
+    } else {
+        console.log("Akses kamera sudah diberikan sebelumnya.");
+    }
+});
+
 async function loadMarkers() {
     try {
         const response = await fetch(`${apiUrl}/api/targets`);

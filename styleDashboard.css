@@ -26,10 +26,15 @@ body {
 .profile-label {
     font-weight: bold;
     flex: 1;
+    white-space: nowrap;
 }
 
 .profile-value {
     text-align: right;
+    flex: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .profile-table {
