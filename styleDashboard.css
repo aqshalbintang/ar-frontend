@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Exo:ital,wght@0,100..900;1,100..900&family=Lilita+One&family=Spicy+Rice&display=swap');
+
+* {
+    font-family: 'Exo', sans-serif;
+}
+
 body {
     display: flex;
     justify-content: center;
@@ -6,31 +12,83 @@ body {
     background-color: #e9e9e9;
     margin: 0;
 }
-.container {
+
+.profile-container {
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
     background: white;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    gap: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-button {
-    padding: 10px 20px;
-    border: none;
+
+.profile-label {
+    font-weight: bold;
+    flex: 1;
+}
+
+.profile-value {
+    text-align: right;
+}
+
+.profile-table {
+    width: 100%;
+    border-collapse: collapse;
     border-radius: 8px;
-    color: white;
-    cursor: pointer;
+    overflow: hidden;
+}
+
+.profile-item {
+    padding: 15px;
+    display: flex;
+    border-bottom: 1px solid #ddd;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.button-container button {
     font-size: 16px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    transition: 0.3s;
 }
-#logoutBtn {
+
+.button-container #kameraBtn {
+    background-color: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px 20px;
+}
+
+.button-container #kameraBtn:hover {
+    background-color: #2563eb;
+}
+
+.button-container #logoutBtn {
     background-color: #f63b3b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px 20px;
 }
-#logoutBtn:hover {
+.button-container #logoutBtn:hover {
     background-color: #eb2525;
 }
-#kameraBtn {
-    background-color: #3b82f6;
-}
-#kameraBtn:hover {
-    background-color: #2563eb;
+
+@media (max-width: 768px) {
+    .profile-container {
+        width: 80%;
+    }
 }

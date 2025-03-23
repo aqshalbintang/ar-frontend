@@ -5,7 +5,6 @@ const rowsPerPage = 5;
 const rowsPerPageVisitor = 10;
 let totalMarker = [];
 let totalVisitors = [];
-const apiUrl = "https://ar-backend-production.up.railway.app";
 
 let sidebar = document.querySelector(".sidebar");
 let toggleBtn = document.querySelector("#btn");
@@ -14,6 +13,11 @@ toggleBtn.addEventListener("click", () => {
     sidebar.classList.toggle("closed");
     menuBtnChange();
 });
+
+// function toggleSubmenu() {
+//     let markerMenu = document.querySelector('.marker-menu');
+//     markerMenu.classList.toggle('active');
+// }
 
 function toggleSubmenu(event) {
     event.preventDefault();
@@ -43,7 +47,7 @@ window.addEventListener('load', handleResizeSidebar);
 
 async function fetchMarker() {
     try {
-        const response = await fetch(`${apiUrl}/api/targets`);
+        const response = await fetch("http://localhost:8080/api/targets");
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -223,7 +227,7 @@ searchInputMarker.addEventListener("input", searchMarkers);
 
 async function fetchVisitor() {
     try {
-        const response = await fetch(`${apiUrl}/api/visitors`);
+        const response = await fetch("http://localhost:8080/api/visitors");
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -370,7 +374,7 @@ document.querySelector('#buttonSubmit').addEventListener('click', async function
                 }
 
                 try {
-                    const uploadResponse = await fetch(`${apiUrl}/api/upload`, {
+                    const uploadResponse = await fetch("http://localhost:8080/api/upload", {
                         method: "POST",
                         body: formData
                     });
@@ -569,7 +573,7 @@ async function deleteFile(fileId) {
     if (!isConfirmed) return;
 
     try {
-        const response = await fetch(`${apiUrl}/api/targets/${fileId}`, {
+        const response = await fetch(`http://localhost:8080/api/targets/${fileId}`, {
             method: "DELETE",
         });
 
@@ -587,7 +591,7 @@ async function deleteFile(fileId) {
 
 async function fetchVisitors() {
     try {
-        const response = await fetch(`${apiUrl}/api/totalvisitors`);
+        const response = await fetch('http://localhost:8080/api/totalvisitors');
         const data = await response.json();
         document.getElementById('visitorCount').innerText = `Total Visitor : ${data.visitors}`;
     } catch (error) {
@@ -597,7 +601,7 @@ async function fetchVisitors() {
 
 async function fetchMarkerCounts() {
     try {
-        const response = await fetch(`${apiUrl}/api/marker-count`);
+        const response = await fetch('http://localhost:8080/api/marker-count');
         const data = await response.json();
 
         document.getElementById('imageCount').innerText = `Total Image : ${data.imageCount}`;

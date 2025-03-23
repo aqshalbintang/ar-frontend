@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function() {
         steps.forEach((step, index) => {
             let position = step.getBoundingClientRect().top;
             if (position < windowHeight * 0.85) {
-                step.style.animation = `slide-up 0.2s ease-out ${index * 0.3}s forwards`;
+                step.style.animation = `slide-up 0.2s ease-out ${index * 0.2}s forwards`;
             }
         });
     }
