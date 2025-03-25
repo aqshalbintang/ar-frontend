@@ -52,12 +52,8 @@
         <a-light type="directional" intensity="0.8" position="1 1 1"></a-light>
     </a-scene>
 
-    <button id="backButton">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAATxJREFUSEvt1cEqRUEcx/HvbycpRclzkGxESSnPwIoH4V14BukiUjY2VrK8Gx5ASlZ//vU/NXTde2aO43RzZ31mPvP/n5nfiI6GOnKZwH/W+fFqtZnNAYuSHkpblF2xmc0CN4Djq5KeSvAsONALYDmwE0m7rcJmNgNcA0sB3QMbkl5agwM999YGcgdslaK+xshWD0BvgW1JryWVVnOGwmY2DVwmlV4BO5LemqBDKw70DFgL5Bk4AOqifUn9nzY4sGIzmwJ6CVpS4JGkw/GAfZfR6tPPf7weu/ag2Afea5af3+pq4U4OV4J7cKR3uP3rNAT3ANlscpdHBsg3PI3MRulVG44D5y+TB0qV18eS9moeti+fZcEJ7s/iPLAiyYMle2TDgftbvCDpMVuMCUVwKZbOm8C/0cVaa/y/Vn8Alx5mH4moMicAAAAASUVORK5CYII="/>
-    </button>
-    <button id="closeButton">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAV1JREFUSEvtlb1KxEAUhb+jVnb2PoPgG4goirJoYSEKlrZa+EAWaiEiInY2omCjqK/iD/5gcc0Ns7DIbmY2CcYi04VM7nfPmTM3oqGlhri04D9zvrX6/1htZhPAGbAj6amoMzObB3aBVUnfRXsLz9jMRoBHYAp4BmYlPfQraGadbN8pMAZcSPLngSsaLjPbAvYhv/MvwJyku96KZrYcXHHoF9CRdFkJ7B//gr8F5Tm8D3RR0lUsLFHF3QJmtg4cBeU5HJgEjoO9H8BSCtRrJoODug3gMDTj8HHAc/AJLEi6jintvh8KHOCu/AAYDUVcqZ/7bSp0aMWNgc1sM6j1Hnqtfgc8VDepqpOtTgiXX6OkRCdb3ch1KjlAospTRuY9MA28AjOJI/Nc0kqlyRV+EidZmPayYj63B64wxbaBtUo/idSEltmXnOoyxStZXTew9Misq5HW6rqcjNZpzOofTLGEHzIu/6MAAAAASUVORK5CYII="/>
-    </button>
+    <button id="backButton">Kembali</button>
+    <button id="closeButton">Tutup</button>
 
     <script>
         document.addEventListener("DOMContentLoaded", async function () {
@@ -113,7 +109,6 @@
                 videoElement.src = objectUrl;
                 videoElement.loop = true;
                 videoElement.crossOrigin = "anonymous";
-                videoElement.setAttribute("playsinline", "true");
                 
                 if (hasAudio) {
                     videoElement.muted = false;
@@ -121,7 +116,7 @@
                 } else {
                     videoElement.muted = true;
                     videoElement.autoplay = true;
-                };
+                }
 
                 videoElement.onloadedmetadata = () => {
                     const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
