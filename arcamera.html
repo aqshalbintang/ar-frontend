@@ -98,6 +98,25 @@
 
         let videoElement = null;
 
+        /* global AFRAME */
+        AFRAME.registerComponent('play-on-click', {
+            init: function () {
+                this.onClick = this.onClick.bind(this);
+            },
+            play: function () {
+                window.addEventListener('click', this.onClick);
+            },
+            pause: function () {
+                window.removeEventListener('click', this.onClick);
+            },
+            onClick: function () {
+                var videoEl = this.el.getAttribute('material').src;
+                if (!videoEl) return;
+                this.el.object3D.visible = true;
+                videoEl.play().catch(err => console.warn("Autoplay gagal, user harus klik:", err));
+            }
+        });
+
         function loadARContent(objectUrl, hasAudio) {
             const arContent = document.getElementById("arContent");
             const closeButton = document.getElementById("closeButton");
@@ -118,17 +137,17 @@
                 videoElement.crossOrigin = "anonymous";
                 videoElement.playsInline = true;
                 videoElement.autoplay = true;
-                videoElement.muted = true; // Dimulai dengan mute untuk bypass autoplay policy
+                videoElement.muted = true; // Mulai dengan mute untuk bypass autoplay policy
                 videoElement.style.display = "none"; // Sembunyikan elemen video asli
 
-                // Tambahkan ke DOM terlebih dahulu
+                // Tambahkan video ke DOM sebelum pemutaran
                 arContent.appendChild(videoElement);
 
                 videoElement.onloadeddata = () => {
                     videoElement.play().then(() => {
                         console.log("Video autoplay berhasil");
 
-                        // Jika ada audio, aktifkan suara setelah video mulai
+                        // Aktifkan audio setelah video mulai
                         if (hasAudio) {
                             setTimeout(() => {
                                 videoElement.muted = false;
@@ -139,6 +158,7 @@
                         console.warn("Autoplay gagal, meminta user action:", e);
                     });
 
+                    // Tambahkan video ke AR
                     const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
                     const video = document.createElement("a-video");
                     video.setAttribute("src", objectUrl);
@@ -146,6 +166,7 @@
                     video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
                     video.setAttribute("position", "0 0 -1");
                     video.setAttribute("look-at", "[camera]");
+                    video.setAttribute("play-on-click", ""); // Tambahkan komponen play-on-click
                     arContent.appendChild(video);
                 };
 
@@ -173,7 +194,6 @@
                 };
             }
         }
-
         document.getElementById("closeButton").addEventListener("click", () => {
             location.reload();
         });
