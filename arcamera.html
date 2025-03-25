@@ -48,12 +48,16 @@
 
     <a-scene embedded arjs="debugUIEnabled: false" vr-mode-ui="enabled: false">
         <a-marker-camera preset="custom"></a-marker-camera>
-        <a-entity id="arContent" position="0 1.2 -3" look-at="[camera]" constraint="keepInsideCameraView: true"></a-entity>
+        <a-entity id="arContent" position="0 1.2 -3"></a-entity>
         <a-light type="directional" intensity="0.8" position="1 1 1"></a-light>
     </a-scene>
 
-    <button id="backButton">Kembali</button>
-    <button id="closeButton">Tutup</button>
+    <button id="backButton">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAATxJREFUSEvt1cEqRUEcx/HvbycpRclzkGxESSnPwIoH4V14BukiUjY2VrK8Gx5ASlZ//vU/NXTde2aO43RzZ31mPvP/n5nfiI6GOnKZwH/W+fFqtZnNAYuSHkpblF2xmc0CN4Djq5KeSvAsONALYDmwE0m7rcJmNgNcA0sB3QMbkl5agwM999YGcgdslaK+xshWD0BvgW1JryWVVnOGwmY2DVwmlV4BO5LemqBDKw70DFgL5Bk4AOqifUn9nzY4sGIzmwJ6CVpS4JGkw/GAfZfR6tPPf7weu/ag2Afea5af3+pq4U4OV4J7cKR3uP3rNAT3ANlscpdHBsg3PI3MRulVG44D5y+TB0qV18eS9moeti+fZcEJ7s/iPLAiyYMle2TDgftbvCDpMVuMCUVwKZbOm8C/0cVaa/y/Vn8Alx5mH4moMicAAAAASUVORK5CYII="/>
+    </button>
+    <button id="closeButton">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAV1JREFUSEvtlb1KxEAUhb+jVnb2PoPgG4goirJoYSEKlrZa+EAWaiEiInY2omCjqK/iD/5gcc0Ns7DIbmY2CcYi04VM7nfPmTM3oqGlhri04D9zvrX6/1htZhPAGbAj6amoMzObB3aBVUnfRXsLz9jMRoBHYAp4BmYlPfQraGadbN8pMAZcSPLngSsaLjPbAvYhv/MvwJyku96KZrYcXHHoF9CRdFkJ7B//gr8F5Tm8D3RR0lUsLFHF3QJmtg4cBeU5HJgEjoO9H8BSCtRrJoODug3gMDTj8HHAc/AJLEi6jintvh8KHOCu/AAYDUVcqZ/7bSp0aMWNgc1sM6j1Hnqtfgc8VDepqpOtTgiXX6OkRCdb3ch1KjlAospTRuY9MA28AjOJI/Nc0kqlyRV+EidZmPayYj63B64wxbaBtUo/idSEltmXnOoyxStZXTew9Misq5HW6rqcjNZpzOofTLGEHzIu/6MAAAAASUVORK5CYII="/>
+    </button>
 
     <script>
         document.addEventListener("DOMContentLoaded", async function () {
@@ -62,6 +66,18 @@
                 alert("Silahkan registrasi atau login dahulu");
                 window.location.href = "/";
                 return;
+            }
+
+            // Cek apakah izin kamera sudah diberikan dalam sessionStorage
+            const hasCameraPermission = sessionStorage.getItem("cameraPermission");
+
+            if (!hasCameraPermission) {
+                try {
+                    await navigator.mediaDevices.getUserMedia({ video: true });
+                    sessionStorage.setItem("cameraPermission", "granted");
+                } catch (error) {
+                    console.error("Akses kamera ditolak:", error);
+                }
             }
 
             try {
@@ -83,7 +99,6 @@
                         scene.appendChild(marker);
                     }
                 });
-
             } catch (error) {
                 console.error("Gagal mengambil data marker:", error);
             }
@@ -92,67 +107,65 @@
         let videoElement = null;
 
         function loadARContent(objectUrl, hasAudio) {
-    const arContent = document.getElementById("arContent");
-    const closeButton = document.getElementById("closeButton");
-    const backButton = document.getElementById("backButton");
-    const overlay = document.getElementById("overlay");
+            const arContent = document.getElementById("arContent");
+            const closeButton = document.getElementById("closeButton");
+            const backButton = document.getElementById("backButton");
+            const overlay = document.getElementById("overlay");
+            
+            arContent.innerHTML = "";
+            closeButton.style.display = "block";
+            backButton.style.display = "none";
+            overlay.style.display = "block";
+            
+            const arType = objectUrl.split(".").pop().toLowerCase();
 
-    arContent.innerHTML = "";
-    closeButton.style.display = "block";
-    backButton.style.display = "none";
-    overlay.style.display = "block";
+            if (["mp4", "webm", "ogg"].includes(arType)) {
+                videoElement = document.createElement("video");
+                videoElement.src = objectUrl;
+                videoElement.loop = true;
+                videoElement.crossOrigin = "anonymous";
+                videoElement.setAttribute("playsinline", "true");
+                
+                if (hasAudio) {
+                    videoElement.muted = false;
+                    videoElement.controls = true;
+                } else {
+                    videoElement.muted = true;
+                    videoElement.autoplay = true;
+                }
 
-    const arType = objectUrl.split(".").pop().toLowerCase();
+                document.body.addEventListener("click", () => {
+                    if (videoElement) {
+                        videoElement.muted = false;
+                        videoElement.play();
+                    }
+                });
 
-    if (["mp4", "webm", "ogg"].includes(arType)) {
-        videoElement = document.createElement("video");
-        videoElement.src = objectUrl;
-        videoElement.loop = true;
-        videoElement.crossOrigin = "anonymous";
-        videoElement.setAttribute("playsinline", "true");
-
-        if (hasAudio) {
-            videoElement.muted = false;
-            videoElement.controls = true;
-        } else {
-            videoElement.muted = true;
-            videoElement.autoplay = true;
-        }
-
-        document.body.addEventListener("click", () => {
-            if (videoElement) {
-                videoElement.muted = false;
-                videoElement.play();
+                videoElement.onloadedmetadata = () => {
+                    const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
+                    const video = document.createElement("a-video");
+                    video.setAttribute("src", objectUrl);
+                    video.setAttribute("width", "1.5");
+                    video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
+                    video.setAttribute("position", "0 0 -3");
+                    video.setAttribute("look-at", "[camera]");
+                    arContent.appendChild(video);
+                };
+            } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
+                const img = new Image();
+                img.src = objectUrl;
+                img.onload = () => {
+                    const aspectRatio = img.naturalWidth / img.naturalHeight;
+                    const image = document.createElement("a-image");
+                    image.setAttribute("src", objectUrl);
+                    image.setAttribute("width", "1.5");
+                    image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
+                    image.setAttribute("position", "0 0 -3");
+                    image.setAttribute("look-at", "[camera]");
+                    arContent.appendChild(image);
+                };
             }
-        });
-
-        videoElement.onloadedmetadata = () => {
-            const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
-            const video = document.createElement("a-video");
-            video.setAttribute("src", objectUrl);
-            video.setAttribute("width", "1.5");
-            video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-            video.setAttribute("position", "0 0 -2");
-            video.setAttribute("look-at", "[camera]");
-            video.setAttribute("constraint", "keepInsideCameraView: true");
-            arContent.appendChild(video);
-        };
-    } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
-        const img = new Image();
-        img.src = objectUrl;
-        img.onload = () => {
-            const aspectRatio = img.naturalWidth / img.naturalHeight;
-            const image = document.createElement("a-image");
-            image.setAttribute("src", objectUrl);
-            image.setAttribute("width", "1.5");
-            image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-            image.setAttribute("position", "0 0 -2");
-            image.setAttribute("look-at", "[camera]");
-            image.setAttribute("constraint", "keepInsideCameraView: true");
-            arContent.appendChild(image);
-        };
-    }
-}
+        }
 
         document.getElementById("closeButton").addEventListener("click", () => {
             location.reload();
