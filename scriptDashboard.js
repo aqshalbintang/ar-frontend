@@ -1,27 +1,7 @@
 const apiUrl = "https://ar-backend-production.up.railway.app";
 
-async function requestCameraAccess() {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        localStorage.setItem("cameraAccess", "granted");
-        return stream;
-    } catch (error) {
-        console.error("Akses kamera ditolak:", error);
-        localStorage.setItem("cameraAccess", "denied");
-    }
-}
-
-// Mengecek status kamera saat halaman dimuat
-async function checkCameraAccess() {
-    const cameraAccess = localStorage.getItem("cameraAccess");
-    if (cameraAccess !== "granted") {
-        await requestCameraAccess();
-    }
-}
-
 document.getElementById('logoutBtn').addEventListener('click', function() {
     localStorage.removeItem('token');
-    localStorage.removeItem('cameraAccess'); // Hapus akses kamera saat logout
     window.location.href = '/';
 });
 
@@ -45,8 +25,6 @@ async function fetchData() {
         window.location.href = "/";
         return;
     }
-
-    await checkCameraAccess(); // Pastikan akses kamera tetap ada
 
     try {
         let response = await fetch(`${apiUrl}/api/user`, {

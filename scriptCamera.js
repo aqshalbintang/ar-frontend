@@ -1,54 +1,30 @@
 const apiUrl = "https://ar-backend-production.up.railway.app";
 
-// Fungsi untuk meminta akses kamera jika belum diberikan
-async function requestCameraAccess() {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        localStorage.setItem("cameraAccess", "granted");
-        return stream;
-    } catch (error) {
-        console.error("Akses kamera ditolak:", error);
-        localStorage.setItem("cameraAccess", "denied");
-    }
-}
+// Simpan stream kamera global agar tidak terputus
+let cameraStream = null;
 
-// Mengecek status kamera saat halaman dimuat
+// Fungsi untuk mengecek atau meminta akses kamera
 async function checkCameraAccess() {
     const cameraAccess = localStorage.getItem("cameraAccess");
 
-    if (cameraAccess === "granted") {
-        console.log("Akses kamera sudah diberikan sebelumnya.");
+    if (cameraAccess === "granted" && cameraStream) {
+        console.log("Akses kamera sudah diberikan dan stream aktif.");
         return;
     }
 
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         localStorage.setItem("cameraAccess", "granted");
+        cameraStream = stream; // Simpan stream agar tidak terputus
 
-        // AR.js tetap akan menggunakan kamera ini tanpa meminta izin lagi
-        const videoTracks = stream.getVideoTracks();
-        console.log("Akses kamera berhasil:", videoTracks);
+        console.log("Akses kamera berhasil:", stream.getVideoTracks());
     } catch (error) {
         console.error("Akses kamera ditolak:", error);
         localStorage.setItem("cameraAccess", "denied");
     }
 }
 
-document.addEventListener("DOMContentLoaded", async function () {
-    await checkCameraAccess();
-});
-
-document.addEventListener("DOMContentLoaded", async function() {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-        alert("Silahkan registrasi atau login dahulu");
-        window.location.href = "/";
-    }
-
-    await checkCameraAccess(); // Pastikan akses kamera tetap ada
-});
-
+// Fungsi untuk memuat marker ke dalam AR scene
 async function loadMarkers() {
     try {
         const response = await fetch(`${apiUrl}/api/targets`);
@@ -77,6 +53,7 @@ async function loadMarkers() {
     }
 }
 
+// Pastikan akses kamera terlebih dahulu sebelum memuat marker
 document.addEventListener("DOMContentLoaded", async function () {
     await checkCameraAccess();
     await loadMarkers();

@@ -1,23 +1,3 @@
-// Fungsi untuk meminta akses kamera jika belum diberikan
-async function requestCameraAccess() {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        localStorage.setItem("cameraAccess", "granted");
-        return stream;
-    } catch (error) {
-        console.error("Akses kamera ditolak:", error);
-        localStorage.setItem("cameraAccess", "denied");
-    }
-}
-
-// Mengecek status kamera saat halaman dimuat
-async function checkCameraAccess() {
-    const cameraAccess = localStorage.getItem("cameraAccess");
-    if (cameraAccess !== "granted") {
-        await requestCameraAccess();
-    }
-}
-
 document.addEventListener("DOMContentLoaded", async function() {
     const token = localStorage.getItem("token");
 
@@ -25,8 +5,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         alert("Silahkan registrasi atau login dahulu");
         window.location.href = "/";
     }
-
-    await checkCameraAccess(); // Pastikan akses kamera tetap ada
 });
 
 document.addEventListener("DOMContentLoaded", () => {
