@@ -135,20 +135,27 @@
                 const video = document.createElement("a-video");
                 video.setAttribute("src", objectUrl);
                 video.setAttribute("width", "1.5");
+                video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
                 video.setAttribute("position", "0 0 -2");
                 video.setAttribute("look-at", "[camera]");
                 video.setAttribute("autoplay", "true");
                 video.setAttribute("loop", "true");
                 video.setAttribute("webkit-playsinline", "true");
                 video.setAttribute("playsinline", "true");
-                if (!hasAudio) {
-                    video.setAttribute("muted", "true");
-                }
+                video.setAttribute("muted", "true");
                 arContent.appendChild(video);
+
+                video.addEventListener("canplay", () => {
+                    video.play();
+                    if (hasAudio) {
+                        video.removeAttribute("muted");
+                    }
+                });
             } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
                 const image = document.createElement("a-image");
                 image.setAttribute("src", objectUrl);
                 image.setAttribute("width", "1.5");
+                video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
                 image.setAttribute("position", "0 0 -2");
                 image.setAttribute("look-at", "[camera]");
                 arContent.appendChild(image);
