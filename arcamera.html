@@ -118,12 +118,25 @@
 
         let videoElement = null;
 
-        if (["mp4", "webm", "ogg"].includes(arType)) {
+        function loadARContent(objectUrl, hasAudio) {
+            const arContent = document.getElementById("arContent");
+            const closeButton = document.getElementById("closeButton");
+            const backButton = document.getElementById("backButton");
+            const overlay = document.getElementById("overlay");
+
+            arContent.innerHTML = "";
+            closeButton.style.display = "block";
+            backButton.style.display = "none";
+            overlay.style.display = "block";
+
+            const arType = objectUrl.split(".").pop().toLowerCase();
+
+            if (["mp4", "webm", "ogg"].includes(arType)) {
                 videoElement = document.createElement("video");
                 videoElement.src = objectUrl;
                 videoElement.loop = true;
                 videoElement.crossOrigin = "anonymous";
-                
+
                 if (hasAudio) {
                     videoElement.muted = false;
                     videoElement.controls = true;
@@ -156,6 +169,7 @@
                     arContent.appendChild(image);
                 };
             }
+        }
     </script>
 </body>
 
