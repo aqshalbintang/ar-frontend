@@ -139,6 +139,8 @@
                 video.setAttribute("look-at", "[camera]");
                 video.setAttribute("autoplay", "true");
                 video.setAttribute("loop", "true");
+                video.setAttribute("webkit-playsinline", "true");
+                video.setAttribute("playsinline", "true");
                 if (!hasAudio) {
                     video.setAttribute("muted", "true");
                 }
