@@ -118,40 +118,44 @@
 
         let videoElement = null;
 
-        function loadARContent(objectUrl, hasAudio) {
-            const arContent = document.getElementById("arContent");
-            const closeButton = document.getElementById("closeButton");
-            const backButton = document.getElementById("backButton");
-            const overlay = document.getElementById("overlay");
-
-            arContent.innerHTML = "";
-            closeButton.style.display = "block";
-            backButton.style.display = "none";
-            overlay.style.display = "block";
-
-            const arType = objectUrl.split(".").pop().toLowerCase();
-
-            if (["mp4", "webm", "ogg"].includes(arType)) {
-                const video = document.createElement("a-video");
-                video.setAttribute("src", objectUrl);
-                video.setAttribute("width", "1.5");
-                video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                video.setAttribute("position", "0 0 -2");
-                video.setAttribute("look-at", "[camera]");
-                if (!hasAudio) {
-                    video.setAttribute("muted", "true");
+        if (["mp4", "webm", "ogg"].includes(arType)) {
+                videoElement = document.createElement("video");
+                videoElement.src = objectUrl;
+                videoElement.loop = true;
+                videoElement.crossOrigin = "anonymous";
+                
+                if (hasAudio) {
+                    videoElement.muted = false;
+                    videoElement.controls = true;
+                } else {
+                    videoElement.muted = true;
+                    videoElement.autoplay = true;
                 }
-                arContent.appendChild(video);
+
+                videoElement.onloadedmetadata = () => {
+                    const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
+                    const video = document.createElement("a-video");
+                    video.setAttribute("src", objectUrl);
+                    video.setAttribute("width", "1.5");
+                    video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
+                    video.setAttribute("position", "0 0 -2");
+                    video.setAttribute("look-at", "[camera]");
+                    arContent.appendChild(video);
+                };
             } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
-                const image = document.createElement("a-image");
-                image.setAttribute("src", objectUrl);
-                image.setAttribute("width", "1.5");
-                video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                image.setAttribute("position", "0 0 -2");
-                image.setAttribute("look-at", "[camera]");
-                arContent.appendChild(image);
+                const img = new Image();
+                img.src = objectUrl;
+                img.onload = () => {
+                    const aspectRatio = img.naturalWidth / img.naturalHeight;
+                    const image = document.createElement("a-image");
+                    image.setAttribute("src", objectUrl);
+                    image.setAttribute("width", "1.5");
+                    image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
+                    image.setAttribute("position", "0 0 -2");
+                    image.setAttribute("look-at", "[camera]");
+                    arContent.appendChild(image);
+                };
             }
-        }
     </script>
 </body>
 
