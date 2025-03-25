@@ -155,7 +155,8 @@
                     video.setAttribute("src", objectUrl);
                     video.setAttribute("width", "1.5");
                     video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    video.setAttribute("position", "0 0 1");
+                    video.setAttribute("position", "0 0 -3");
+                    video.setAttribute("look-at", "[camera]");
                     arContent.appendChild(video);
                 };
             } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
@@ -167,7 +168,8 @@
                     image.setAttribute("src", objectUrl);
                     image.setAttribute("width", "1.5");
                     image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    image.setAttribute("position", "0 0 1");
+                    image.setAttribute("position", "0 0 -3");
+                    image.setAttribute("look-at", "[camera]");
                     arContent.appendChild(image);
                 };
             }
