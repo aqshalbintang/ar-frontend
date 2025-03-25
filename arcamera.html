@@ -132,42 +132,24 @@
             const arType = objectUrl.split(".").pop().toLowerCase();
 
             if (["mp4", "webm", "ogg"].includes(arType)) {
-                videoElement = document.createElement("video");
-                videoElement.src = objectUrl;
-                videoElement.loop = true;
-                videoElement.crossOrigin = "anonymous";
-
-                if (hasAudio) {
-                    videoElement.muted = false;
-                    videoElement.controls = true;
-                } else {
-                    videoElement.muted = true;
-                    videoElement.autoplay = true;
+                const video = document.createElement("a-video");
+                video.setAttribute("src", objectUrl);
+                video.setAttribute("width", "1.5");
+                video.setAttribute("position", "0 0 -2");
+                video.setAttribute("look-at", "[camera]");
+                video.setAttribute("autoplay", "true");
+                video.setAttribute("loop", "true");
+                if (!hasAudio) {
+                    video.setAttribute("muted", "true");
                 }
-
-                videoElement.onloadedmetadata = () => {
-                    const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
-                    const video = document.createElement("a-video");
-                    video.setAttribute("src", objectUrl);
-                    video.setAttribute("width", "1.5");
-                    video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    video.setAttribute("position", "0 0 -2");
-                    video.setAttribute("look-at", "[camera]");
-                    arContent.appendChild(video);
-                };
+                arContent.appendChild(video);
             } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
-                const img = new Image();
-                img.src = objectUrl;
-                img.onload = () => {
-                    const aspectRatio = img.naturalWidth / img.naturalHeight;
-                    const image = document.createElement("a-image");
-                    image.setAttribute("src", objectUrl);
-                    image.setAttribute("width", "1.5");
-                    image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    image.setAttribute("position", "0 0 -2");
-                    image.setAttribute("look-at", "[camera]");
-                    arContent.appendChild(image);
-                };
+                const image = document.createElement("a-image");
+                image.setAttribute("src", objectUrl);
+                image.setAttribute("width", "1.5");
+                image.setAttribute("position", "0 0 -2");
+                image.setAttribute("look-at", "[camera]");
+                arContent.appendChild(image);
             }
         }
     </script>
