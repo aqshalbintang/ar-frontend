@@ -96,9 +96,6 @@
             }
         });
 
-        let videoElement = null;
-
-        /* global AFRAME */
         AFRAME.registerComponent('play-on-click', {
             init: function () {
                 this.onClick = this.onClick.bind(this);
@@ -116,6 +113,8 @@
                 videoEl.play().catch(err => console.warn("Autoplay gagal, user harus klik:", err));
             }
         });
+
+        let videoElement = null;
 
         function loadARContent(objectUrl, hasAudio) {
             const arContent = document.getElementById("arContent");
@@ -137,17 +136,15 @@
                 videoElement.crossOrigin = "anonymous";
                 videoElement.playsInline = true;
                 videoElement.autoplay = true;
-                videoElement.muted = true; // Mulai dengan mute untuk bypass autoplay policy
-                videoElement.style.display = "none"; // Sembunyikan elemen video asli
+                videoElement.muted = true;
+                videoElement.style.display = "none";
 
-                // Tambahkan video ke DOM sebelum pemutaran
                 arContent.appendChild(videoElement);
 
                 videoElement.onloadeddata = () => {
                     videoElement.play().then(() => {
                         console.log("Video autoplay berhasil");
 
-                        // Aktifkan audio setelah video mulai
                         if (hasAudio) {
                             setTimeout(() => {
                                 videoElement.muted = false;
@@ -158,19 +155,17 @@
                         console.warn("Autoplay gagal, meminta user action:", e);
                     });
 
-                    // Tambahkan video ke AR
                     const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
                     const video = document.createElement("a-video");
                     video.setAttribute("src", objectUrl);
-                    video.setAttribute("width", "1.5");
-                    video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
+                    video.setAttribute("width", "1");
+                    video.setAttribute("height", (1 / aspectRatio).toFixed(2));
                     video.setAttribute("position", "0 0 -1");
                     video.setAttribute("look-at", "[camera]");
-                    video.setAttribute("play-on-click", ""); // Tambahkan komponen play-on-click
+                    video.setAttribute("play-on-click", "");
                     arContent.appendChild(video);
                 };
 
-                // Trik tambahan: Sentuhan pertama memaksa video play
                 function enableAutoplay() {
                     videoElement.play();
                     document.removeEventListener("click", enableAutoplay);
@@ -186,8 +181,8 @@
                     const aspectRatio = img.naturalWidth / img.naturalHeight;
                     const image = document.createElement("a-image");
                     image.setAttribute("src", objectUrl);
-                    image.setAttribute("width", "1.5");
-                    image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
+                    image.setAttribute("width", "1");
+                    image.setAttribute("height", (1 / aspectRatio).toFixed(2));
                     image.setAttribute("position", "0 0 -1");
                     image.setAttribute("look-at", "[camera]");
                     arContent.appendChild(image);
