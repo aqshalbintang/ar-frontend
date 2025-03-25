@@ -48,7 +48,7 @@
 
     <a-scene embedded arjs="debugUIEnabled: false" vr-mode-ui="enabled: false">
         <a-marker-camera preset="custom" ></a-marker-camera>
-        <a-entity id="arContent" position="0 0 -1"></a-entity>
+        <a-entity id="arContent" position="0 1.2 -2"></a-entity>
         <a-light type="directional" intensity="0.8" position="1 1 1"></a-light>
     </a-scene>
 
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     video.setAttribute("src", objectUrl);
                     video.setAttribute("width", "1.5");
                     video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    video.setAttribute("position", "0 0 -1");
+                    video.setAttribute("position", "0 0 -2");
                     video.setAttribute("look-at", "[camera]");
                     arContent.appendChild(video);
                 };
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     image.setAttribute("src", objectUrl);
                     image.setAttribute("width", "1.5");
                     image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    image.setAttribute("position", "0 0 -1");
+                    image.setAttribute("position", "0 0 -2");
                     image.setAttribute("look-at", "[camera]");
                     arContent.appendChild(image);
                 };
