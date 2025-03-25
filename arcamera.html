@@ -48,7 +48,7 @@
 
     <a-scene embedded arjs="debugUIEnabled: false" vr-mode-ui="enabled: false">
         <a-marker-camera preset="custom" ></a-marker-camera>
-        <a-entity id="arContent" position="0 0 -1"></a-entity>
+        <a-entity id="arContent" position="0 0 0"></a-entity>
         <a-light type="directional" intensity="0.8" position="1 1 1"></a-light>
     </a-scene>
 
@@ -97,6 +97,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     } catch (error) {
         console.error("Gagal mengambil data marker:", error);
     }
+
+    document.getElementById("closeButton").addEventListener("click", () => {
+        location.reload();
+    });
+
+    document.getElementById("backButton").addEventListener("click", () => {
+        window.location.href = "/dashboard.html";
+    });
 
     function disableAllMarkers(scene) {
         const markers = scene.querySelectorAll("a-marker");
