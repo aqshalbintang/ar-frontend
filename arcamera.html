@@ -48,7 +48,7 @@
 
     <a-scene embedded arjs="debugUIEnabled: false" vr-mode-ui="enabled: false">
         <a-marker-camera preset="custom" ></a-marker-camera>
-        <a-entity id="arContent" position="0 1.2 -3"></a-entity>
+        <a-entity id="arContent" position="0 0 -1"></a-entity>
         <a-light type="directional" intensity="0.8" position="1 1 1"></a-light>
     </a-scene>
 
@@ -98,14 +98,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.error("Gagal mengambil data marker:", error);
     }
 
-    document.getElementById("closeButton").addEventListener("click", () => {
-        location.reload();
-    });
-
-    document.getElementById("backButton").addEventListener("click", () => {
-        window.location.href = "/dashboard.html";
-    });
-
     function disableAllMarkers(scene) {
         const markers = scene.querySelectorAll("a-marker");
         markers.forEach(marker => marker.removeAttribute("detect-markers"));
@@ -146,7 +138,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
                     const video = document.createElement("a-video");
                     video.setAttribute("src", objectUrl);
-                    video.setAttribute("width", "1.5");
+                    video.setAttribute("width", "1");
                     video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
                     video.setAttribute("position", "0 0 -3");
                     video.setAttribute("look-at", "[camera]");
