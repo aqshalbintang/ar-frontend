@@ -103,27 +103,43 @@
             const closeButton = document.getElementById("closeButton");
             const backButton = document.getElementById("backButton");
             const overlay = document.getElementById("overlay");
-            
+
             arContent.innerHTML = "";
             closeButton.style.display = "block";
             backButton.style.display = "none";
             overlay.style.display = "block";
-            
+
             const arType = objectUrl.split(".").pop().toLowerCase();
 
             if (["mp4", "webm", "ogg"].includes(arType)) {
-                videoElement = document.createElement("video");
+                const videoElement = document.createElement("video");
                 videoElement.src = objectUrl;
                 videoElement.loop = true;
                 videoElement.crossOrigin = "anonymous";
-                
+                videoElement.playsInline = true; // Agar bisa autoplay di mobile
+
                 if (hasAudio) {
                     videoElement.muted = false;
                     videoElement.controls = true;
                 } else {
                     videoElement.muted = true;
-                    videoElement.autoplay = true;
                 }
+
+                // Paksa autoplay dengan trik event listener
+                function playVideo() {
+                    videoElement.play().then(() => {
+                        console.log("Video autoplay berhasil");
+                    }).catch(e => {
+                        console.warn("Autoplay gagal, meminta user action:", e);
+                    });
+
+                    // Hapus event listener setelah dipanggil
+                    document.removeEventListener("click", playVideo);
+                    document.removeEventListener("touchstart", playVideo);
+                }
+
+                document.addEventListener("click", playVideo);
+                document.addEventListener("touchstart", playVideo);
 
                 videoElement.onloadedmetadata = () => {
                     const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
@@ -131,7 +147,7 @@
                     video.setAttribute("src", objectUrl);
                     video.setAttribute("width", "1.5");
                     video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    video.setAttribute("position", "0 0 -3");
+                    video.setAttribute("position", "0 0 -1");
                     video.setAttribute("look-at", "[camera]");
                     arContent.appendChild(video);
                 };
@@ -144,12 +160,13 @@
                     image.setAttribute("src", objectUrl);
                     image.setAttribute("width", "1.5");
                     image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    image.setAttribute("position", "0 0 -3");
+                    image.setAttribute("position", "0 0 -1");
                     image.setAttribute("look-at", "[camera]");
                     arContent.appendChild(image);
                 };
             }
         }
+
 
         document.getElementById("closeButton").addEventListener("click", () => {
             location.reload();
