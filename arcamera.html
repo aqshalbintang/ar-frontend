@@ -48,7 +48,7 @@
 
     <a-scene embedded arjs="debugUIEnabled: false" vr-mode-ui="enabled: false">
         <a-marker-camera preset="custom"></a-marker-camera>
-        <a-entity id="arContent" position="0 1.2 -3"></a-entity>
+        <a-entity id="arContent" position="0 1.2 -3" look-at="[camera]" constraint="keepInsideCameraView: true"></a-entity>
         <a-light type="directional" intensity="0.8" position="1 1 1"></a-light>
     </a-scene>
 
@@ -92,67 +92,67 @@
         let videoElement = null;
 
         function loadARContent(objectUrl, hasAudio) {
-            const arContent = document.getElementById("arContent");
-            const closeButton = document.getElementById("closeButton");
-            const backButton = document.getElementById("backButton");
-            const overlay = document.getElementById("overlay");
-            
-            arContent.innerHTML = "";
-            closeButton.style.display = "block";
-            backButton.style.display = "none";
-            overlay.style.display = "block";
-            
-            const arType = objectUrl.split(".").pop().toLowerCase();
+    const arContent = document.getElementById("arContent");
+    const closeButton = document.getElementById("closeButton");
+    const backButton = document.getElementById("backButton");
+    const overlay = document.getElementById("overlay");
 
-            if (["mp4", "webm", "ogg"].includes(arType)) {
-                videoElement = document.createElement("video");
-                videoElement.src = objectUrl;
-                videoElement.loop = true;
-                videoElement.crossOrigin = "anonymous";
-                videoElement.setAttribute("playsinline", "true");
-                
-                if (hasAudio) {
-                    videoElement.muted = false;
-                    videoElement.controls = true;
-                } else {
-                    videoElement.muted = true;
-                    videoElement.autoplay = true;
-                }
+    arContent.innerHTML = "";
+    closeButton.style.display = "block";
+    backButton.style.display = "none";
+    overlay.style.display = "block";
 
-                document.body.addEventListener("click", () => {
-                    if (videoElement) {
-                        videoElement.muted = false;
-                        videoElement.play();
-                    }
-                });
+    const arType = objectUrl.split(".").pop().toLowerCase();
 
-                videoElement.onloadedmetadata = () => {
-                    const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
-                    const video = document.createElement("a-video");
-                    video.setAttribute("src", objectUrl);
-                    video.setAttribute("width", "1.5");
-                    video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    video.setAttribute("position", "0 0 -2");
-                    video.setAttribute("look-at", "[camera]");
-                    video.setAttribute("constraint", "keepInsideCameraView: true");
-                    arContent.appendChild(video);
-                };
-            } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
-                const img = new Image();
-                img.src = objectUrl;
-                img.onload = () => {
-                    const aspectRatio = img.naturalWidth / img.naturalHeight;
-                    const image = document.createElement("a-image");
-                    image.setAttribute("src", objectUrl);
-                    image.setAttribute("width", "1.5");
-                    image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    image.setAttribute("position", "0 0 -2");
-                    image.setAttribute("look-at", "[camera]");
-                    image.setAttribute("constraint", "keepInsideCameraView: true");
-                    arContent.appendChild(image);
-                };
-            }
+    if (["mp4", "webm", "ogg"].includes(arType)) {
+        videoElement = document.createElement("video");
+        videoElement.src = objectUrl;
+        videoElement.loop = true;
+        videoElement.crossOrigin = "anonymous";
+        videoElement.setAttribute("playsinline", "true");
+
+        if (hasAudio) {
+            videoElement.muted = false;
+            videoElement.controls = true;
+        } else {
+            videoElement.muted = true;
+            videoElement.autoplay = true;
         }
+
+        document.body.addEventListener("click", () => {
+            if (videoElement) {
+                videoElement.muted = false;
+                videoElement.play();
+            }
+        });
+
+        videoElement.onloadedmetadata = () => {
+            const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
+            const video = document.createElement("a-video");
+            video.setAttribute("src", objectUrl);
+            video.setAttribute("width", "1.5");
+            video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
+            video.setAttribute("position", "0 0 -2");
+            video.setAttribute("look-at", "[camera]");
+            video.setAttribute("constraint", "keepInsideCameraView: true");
+            arContent.appendChild(video);
+        };
+    } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
+        const img = new Image();
+        img.src = objectUrl;
+        img.onload = () => {
+            const aspectRatio = img.naturalWidth / img.naturalHeight;
+            const image = document.createElement("a-image");
+            image.setAttribute("src", objectUrl);
+            image.setAttribute("width", "1.5");
+            image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
+            image.setAttribute("position", "0 0 -2");
+            image.setAttribute("look-at", "[camera]");
+            image.setAttribute("constraint", "keepInsideCameraView: true");
+            arContent.appendChild(image);
+        };
+    }
+}
 
         document.getElementById("closeButton").addEventListener("click", () => {
             location.reload();
