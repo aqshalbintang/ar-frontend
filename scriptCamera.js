@@ -15,10 +15,28 @@ async function requestCameraAccess() {
 // Mengecek status kamera saat halaman dimuat
 async function checkCameraAccess() {
     const cameraAccess = localStorage.getItem("cameraAccess");
-    if (cameraAccess !== "granted") {
-        await requestCameraAccess();
+
+    if (cameraAccess === "granted") {
+        console.log("Akses kamera sudah diberikan sebelumnya.");
+        return;
+    }
+
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        localStorage.setItem("cameraAccess", "granted");
+
+        // AR.js tetap akan menggunakan kamera ini tanpa meminta izin lagi
+        const videoTracks = stream.getVideoTracks();
+        console.log("Akses kamera berhasil:", videoTracks);
+    } catch (error) {
+        console.error("Akses kamera ditolak:", error);
+        localStorage.setItem("cameraAccess", "denied");
     }
 }
+
+document.addEventListener("DOMContentLoaded", async function () {
+    await checkCameraAccess();
+});
 
 document.addEventListener("DOMContentLoaded", async function() {
     const token = localStorage.getItem("token");
@@ -59,7 +77,10 @@ async function loadMarkers() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", loadMarkers);
+document.addEventListener("DOMContentLoaded", async function () {
+    await checkCameraAccess();
+    await loadMarkers();
+});
 
 document.getElementById("backButton").addEventListener("click", function () {
     window.location.href = "/dashboard.html";
