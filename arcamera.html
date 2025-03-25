@@ -71,8 +71,6 @@
                 return;
             }
 
-            let arActive = false;
-
             try {
                 const response = await fetch("https://ar-backend-production.up.railway.app/api/targets");
                 const targets = await response.json();
@@ -86,11 +84,7 @@
                         marker.setAttribute("url", target.patternFileUrl);
 
                         marker.addEventListener("markerFound", () => {
-                            if (!arActive) {
-                                arActive = true;
-                                disableAllMarkers(scene);
-                                loadARContent(target.objectUrl, target.hasAudio);
-                            }
+                            loadARContent(target.objectUrl, target.hasAudio);
                         });
 
                         scene.appendChild(marker);
@@ -100,21 +94,7 @@
             } catch (error) {
                 console.error("Gagal mengambil data marker:", error);
             }
-
-            document.getElementById("closeButton").addEventListener("click", () => {
-                location.reload();
-            });
-
-            document.getElementById("backButton").addEventListener("click", () => {
-                window.location.href = "/dashboard.html";
-            });
-
-            function disableAllMarkers(scene) {
-                const markers = scene.querySelectorAll("a-marker");
-                markers.forEach(marker => marker.removeAttribute("detect-markers"));
-            }
         });
-
 
         let videoElement = null;
 
@@ -123,12 +103,12 @@
             const closeButton = document.getElementById("closeButton");
             const backButton = document.getElementById("backButton");
             const overlay = document.getElementById("overlay");
-
+            
             arContent.innerHTML = "";
             closeButton.style.display = "block";
             backButton.style.display = "none";
             overlay.style.display = "block";
-
+            
             const arType = objectUrl.split(".").pop().toLowerCase();
 
             if (["mp4", "webm", "ogg"].includes(arType)) {
@@ -136,7 +116,7 @@
                 videoElement.src = objectUrl;
                 videoElement.loop = true;
                 videoElement.crossOrigin = "anonymous";
-
+                
                 if (hasAudio) {
                     videoElement.muted = false;
                     videoElement.controls = true;
@@ -151,7 +131,7 @@
                     video.setAttribute("src", objectUrl);
                     video.setAttribute("width", "1.5");
                     video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    video.setAttribute("position", "0 0 -2");
+                    video.setAttribute("position", "0 0 -3");
                     video.setAttribute("look-at", "[camera]");
                     arContent.appendChild(video);
                 };
@@ -164,12 +144,20 @@
                     image.setAttribute("src", objectUrl);
                     image.setAttribute("width", "1.5");
                     image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    image.setAttribute("position", "0 0 -2");
+                    image.setAttribute("position", "0 0 -3");
                     image.setAttribute("look-at", "[camera]");
                     arContent.appendChild(image);
                 };
             }
         }
+
+        document.getElementById("closeButton").addEventListener("click", () => {
+            location.reload();
+        });
+
+        document.getElementById("backButton").addEventListener("click", () => {
+            window.location.href = "/dashboard.html";
+        });
     </script>
 </body>
 
