@@ -102,34 +102,8 @@
             }
 
             document.getElementById("closeButton").addEventListener("click", () => {
-                // Ambil semua elemen AR yang ada di dalam marker
-                let arContent = document.getElementById("arContent");
-
-                if (arContent) {
-                    // Hapus semua child dari arContent (misalnya model, video, teks, dsb.)
-                    while (arContent.firstChild) {
-                        arContent.removeChild(arContent.firstChild);
-                    }
-                }
-
-                // Reset video jika ada
-                let video = document.querySelector("a-video");
-                if (video) {
-                    video.pause();  // Hentikan video
-                    video.currentTime = 0; // Reset ke awal
-                    video.removeAttribute("src"); // Hilangkan sumber video
-                }
-
-                // Reset marker agar bisa scan ulang
-                let markers = document.querySelectorAll("a-marker");
-                markers.forEach(marker => {
-                    marker.setAttribute("visible", "false"); // Sembunyikan sementara
-                    setTimeout(() => {
-                        marker.setAttribute("visible", "true"); // Tampilkan kembali
-                    }, 500);
-                });
+                location.reload();
             });
-
 
             document.getElementById("backButton").addEventListener("click", () => {
                 window.location.href = "/dashboard.html";
