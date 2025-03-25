@@ -40,25 +40,37 @@
     <div id="userFormRegistrasi">
         <div class="modal-content">
             <h2>Registrasi</h2>
-            <p>Nama :</p>
-            <input type="text" id="name" placeholder="Masukkan nama" required><br>
-            <p>Email :</p>
-            <input type="text" id="email" placeholder="Masukkan email" required><br>
-            <p>Tanggal Lahir :</p>
-            <input type="date" id="birthDate" placeholder="Tanggal Lahir" required><br>
-            <p>Nomor HP :</p>
-            <input type="tel" id="phone" placeholder="Masukkan nomor HP" required><br>
-            <button id="submitFormRegistrasi">Submit</button>
-            <button id="closeModalRegistrasi">Batal</button></br>
-            <span>Jika anda sudah pernah registrasi dengan email yang sama, silahkan login <a href="#" id="formLogin">disini</a></span>
+            <div class="input-container">
+                <input type="text" id="name" placeholder=" " required>
+                <label for="name">Nama</label>
+            </div>
+            <div class="input-container">
+                <input type="email" id="email" placeholder=" " required>
+                <label for="email">Email</label>
+            </div>
+            <div class="input-container">
+                <input type="date" id="birthDate" required>
+                <label for="birthDate">Tanggal Lahir</label>
+            </div>
+            <div class="input-container">
+                <input type="tel" id="phone" placeholder=" " required>
+                <label for="phone">Nomor HP</label>
+            </div>
+            <div class="buttons">
+                <button id="submitFormRegistrasi">Submit</button>
+                <button id="closeModalRegistrasi">Batal</button>
+            </div>
+            <span>Jika anda sudah pernah registrasi, silahkan login <a href="#" id="formLogin">disini</a></span>
         </div>
     </div>
 
     <div id="userFormLogin">
         <div class="modal-content">
             <h2>Login</h2>
-            <p>Email :</p>
-            <input type="text" id="emailLogin" placeholder="Masukkan email" required><br>
+            <div class="input-container">
+            <input type="text" id="emailLogin" placeholder=" " required>
+            <label for="email">Email</label>
+            </div>
             <button id="submitFormLogin">Submit</button>
             <button id="closeModalLogin">Batal</button></br>
             <span>Belum pernah registrasi dengan email ? Silahkan registrasi <a href="#" id="openMoreFormRegistrasi">disini</a></span>

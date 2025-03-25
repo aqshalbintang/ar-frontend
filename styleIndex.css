@@ -193,34 +193,57 @@ nav {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-    width: 300px;
+    width: 350px;
     text-align: center;
     animation-name: slide-down;
     animation-duration: 1s;
 }
 
 .modal-content h2 {
-    margin: 15px;
+    margin: 15px 10px;
     font-size: 24px;
 }
 
-.modal-content input {
-    width: 80%;
-    padding: 10px;
-    border: 1px solid #a7a7a7;
-    border-radius: 10px;
-    margin: 5px;
+.input-container {
+    position: relative;
+    width: 90%;
+    margin: 0 auto;
+    margin: 15px;
 }
 
-.modal-content p {
-    text-align: left;
-    font-size: 12px;
-    margin-top: 10px;
-    margin-left: 30px;
+input {
+    width: 100%;
+    padding: 12px 10px 8px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    background: transparent;
+}
+
+label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #888;
+    transition: 0.3s ease-in-out;
+    pointer-events: none;
+    background: white;
+    padding: 0 5px;
+}
+
+input:focus + label,
+input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 14px;
+    color: #007BFF;
+    transform: translateY(-50%);
 }
 
 .modal-content span {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 #submitFormRegistrasi,
@@ -231,7 +254,6 @@ nav {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    margin-top: 20px;
     margin-bottom: 10px;
 }
 
@@ -243,7 +265,6 @@ nav {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    margin-top: 20px;
 }
 
 .panduan-container {

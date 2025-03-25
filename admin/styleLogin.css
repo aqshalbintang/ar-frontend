@@ -35,20 +35,42 @@ p {
     margin-bottom: 30px;
 }
 
-.input-group {
-    margin-bottom: 12px;
+.input-container {
+    position: relative;
+    width: 90%;
+    margin: 0 auto;
+    margin: 15px;
 }
 
 input {
-    width: 85%;
-    padding: 12px;
-    border: 1px solid #a7a7a7;
-    border-radius: 6px;
+    width: 100%;
+    padding: 12px 10px 8px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
     outline: none;
+    background: transparent;
 }
 
-input:focus {
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #888;
+    transition: 0.3s ease-in-out;
+    pointer-events: none;
+    background: white;
+    padding: 0 5px;
+}
+
+input:focus + label,
+input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 14px;
+    color: #007BFF;
+    transform: translateY(-50%);
 }
 
 .btn {
@@ -61,7 +83,7 @@ input:focus {
     background: #007bff;
     color: white;
     transition: all 0.3s ease-in-out;
-    margin-top: 20px;
+    margin-top: 15px;
     margin-bottom: 10px;
 }
 
