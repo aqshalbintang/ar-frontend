@@ -1,12 +1,3 @@
-document.addEventListener("DOMContentLoaded", async function() {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-        alert("Silahkan registrasi atau login dahulu");
-        window.location.href = "/";
-    }
-});
-
 document.addEventListener("DOMContentLoaded", () => {
     const arContent = document.getElementById("arContent");
     const objectUrl = localStorage.getItem("arObjectUrl");
@@ -26,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         video.src = objectUrl;
         video.loop = true;
         video.crossOrigin = "anonymous";
-        
+
         if (hasAudio) {
             video.muted = false;
             video.controls = true;
