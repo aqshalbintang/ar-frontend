@@ -107,65 +107,52 @@
         let videoElement = null;
 
         function loadARContent(objectUrl, hasAudio) {
-            const arContent = document.getElementById("arContent");
-            const closeButton = document.getElementById("closeButton");
-            const backButton = document.getElementById("backButton");
-            const overlay = document.getElementById("overlay");
+        const arContent = document.getElementById("arContent");
+        const closeButton = document.getElementById("closeButton");
+        const backButton = document.getElementById("backButton");
+        const overlay = document.getElementById("overlay");
+        
+        arContent.innerHTML = "";
+        closeButton.style.display = "block";
+        backButton.style.display = "none";
+        overlay.style.display = "block";
+        
+        const arType = objectUrl.split(".").pop().toLowerCase();
+
+        if (["mp4", "webm", "ogg"].includes(arType)) {
+            videoElement = document.createElement("video");
+            videoElement.src = objectUrl;
+            videoElement.loop = true;
+            videoElement.crossOrigin = "anonymous";
+            videoElement.setAttribute("playsinline", "true");
+            videoElement.autoplay = true;
+            videoElement.muted = !hasAudio;
             
-            arContent.innerHTML = "";
-            closeButton.style.display = "block";
-            backButton.style.display = "none";
-            overlay.style.display = "block";
+            videoElement.oncanplay = () => {
+                videoElement.play().catch(error => console.error("Autoplay gagal:", error));
+            };
             
-            const arType = objectUrl.split(".").pop().toLowerCase();
-
-            if (["mp4", "webm", "ogg"].includes(arType)) {
-                videoElement = document.createElement("video");
-                videoElement.src = objectUrl;
-                videoElement.loop = true;
-                videoElement.crossOrigin = "anonymous";
-                videoElement.setAttribute("playsinline", "true");
-                
-                if (hasAudio) {
-                    videoElement.muted = false;
-                    videoElement.controls = true;
-                } else {
-                    videoElement.muted = true;
-                    videoElement.autoplay = true;
-                }
-
-                document.body.addEventListener("click", () => {
-                    if (videoElement) {
-                        videoElement.muted = false;
-                        videoElement.play();
-                    }
-                });
-
-                videoElement.onloadedmetadata = () => {
-                    const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
-                    const video = document.createElement("a-video");
-                    video.setAttribute("src", objectUrl);
-                    video.setAttribute("width", "1.5");
-                    video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    video.setAttribute("position", "0 0 -3");
-                    video.setAttribute("look-at", "[camera]");
-                    arContent.appendChild(video);
-                };
-            } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
-                const img = new Image();
-                img.src = objectUrl;
-                img.onload = () => {
-                    const aspectRatio = img.naturalWidth / img.naturalHeight;
-                    const image = document.createElement("a-image");
-                    image.setAttribute("src", objectUrl);
-                    image.setAttribute("width", "1.5");
-                    image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    image.setAttribute("position", "0 0 -3");
-                    image.setAttribute("look-at", "[camera]");
-                    arContent.appendChild(image);
-                };
-            }
+            const video = document.createElement("a-video");
+            video.setAttribute("src", objectUrl);
+            video.setAttribute("width", "1.5");
+            video.setAttribute("position", "0 0 -3");
+            video.setAttribute("look-at", "[camera]");
+            arContent.appendChild(video);
+        } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
+            const img = new Image();
+            img.src = objectUrl;
+            img.onload = () => {
+                const aspectRatio = img.naturalWidth / img.naturalHeight;
+                const image = document.createElement("a-image");
+                image.setAttribute("src", objectUrl);
+                image.setAttribute("width", "1.5");
+                image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
+                image.setAttribute("position", "0 0 -3");
+                image.setAttribute("look-at", "[camera]");
+                arContent.appendChild(image);
+            };
         }
+    }
 
         document.getElementById("closeButton").addEventListener("click", () => {
             location.reload();
