@@ -116,32 +116,29 @@
                 videoElement.src = objectUrl;
                 videoElement.loop = true;
                 videoElement.crossOrigin = "anonymous";
-                videoElement.playsInline = true; // Agar bisa autoplay di mobile
+                videoElement.playsInline = true;
+                videoElement.autoplay = true;
+                videoElement.muted = true; // Dimulai dengan mute untuk bypass autoplay policy
+                videoElement.style.display = "none"; // Sembunyikan elemen video asli
 
-                if (hasAudio) {
-                    videoElement.muted = false;
-                    videoElement.controls = true;
-                } else {
-                    videoElement.muted = true;
-                }
+                // Tambahkan ke DOM terlebih dahulu
+                arContent.appendChild(videoElement);
 
-                // Paksa autoplay dengan trik event listener
-                function playVideo() {
+                videoElement.onloadeddata = () => {
                     videoElement.play().then(() => {
                         console.log("Video autoplay berhasil");
+
+                        // Jika ada audio, aktifkan suara setelah video mulai
+                        if (hasAudio) {
+                            setTimeout(() => {
+                                videoElement.muted = false;
+                                videoElement.volume = 1.0;
+                            }, 500);
+                        }
                     }).catch(e => {
                         console.warn("Autoplay gagal, meminta user action:", e);
                     });
 
-                    // Hapus event listener setelah dipanggil
-                    document.removeEventListener("click", playVideo);
-                    document.removeEventListener("touchstart", playVideo);
-                }
-
-                document.addEventListener("click", playVideo);
-                document.addEventListener("touchstart", playVideo);
-
-                videoElement.onloadedmetadata = () => {
                     const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
                     const video = document.createElement("a-video");
                     video.setAttribute("src", objectUrl);
@@ -151,6 +148,16 @@
                     video.setAttribute("look-at", "[camera]");
                     arContent.appendChild(video);
                 };
+
+                // Trik tambahan: Sentuhan pertama memaksa video play
+                function enableAutoplay() {
+                    videoElement.play();
+                    document.removeEventListener("click", enableAutoplay);
+                    document.removeEventListener("touchstart", enableAutoplay);
+                }
+
+                document.addEventListener("click", enableAutoplay);
+                document.addEventListener("touchstart", enableAutoplay);
             } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
                 const img = new Image();
                 img.src = objectUrl;
@@ -166,7 +173,6 @@
                 };
             }
         }
-
 
         document.getElementById("closeButton").addEventListener("click", () => {
             location.reload();
