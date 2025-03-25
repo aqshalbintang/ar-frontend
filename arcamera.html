@@ -146,9 +146,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                     const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
                     const video = document.createElement("a-video");
                     video.setAttribute("src", objectUrl);
-                    video.setAttribute("width", "1");
+                    video.setAttribute("width", "1.5");
                     video.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    video.setAttribute("position", "0 0 -3");
+                    video.setAttribute("position", "0 0 -1");
                     video.setAttribute("look-at", "[camera]");
                     arContent.appendChild(video);
                 };
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     image.setAttribute("src", objectUrl);
                     image.setAttribute("width", "1.5");
                     image.setAttribute("height", (1.5 / aspectRatio).toFixed(2));
-                    image.setAttribute("position", "0 0 -3");
+                    image.setAttribute("position", "0 0 -1");
                     image.setAttribute("look-at", "[camera]");
                     arContent.appendChild(image);
                 };
