@@ -74,48 +74,33 @@ async function loadARContent() {
     }
 
     let object;
-    let video;
 
     if (["mp4", "webm", "ogg"].includes(arType)) {
-        video = document.createElement("video");
-        video.src = objectUrl;
-        video.loop = true;
-        video.crossOrigin = "anonymous";
-        video.muted = !hasAudio;
-        video.autoplay = !hasAudio;
+        const video = document.createElement("a-video");
+        video.setAttribute("src", objectUrl);
+        video.setAttribute("width", "1");
+        video.setAttribute("height", "1"); // Set a default height
+        video.setAttribute("position", "0 1.2 -3");
+        arContent.appendChild(video);
 
-        video.onloadedmetadata = () => {
-            const aspectRatio = video.videoWidth / video.videoHeight;
-            object = document.createElement("a-video");
-            object.setAttribute("src", objectUrl);
-            object.setAttribute("width", "1");
-            object.setAttribute("height", (1 / aspectRatio).toFixed(2));
-            object.setAttribute("position", "0 1.2 -3");
-            arContent.appendChild(object);
+        if (hasAudio) {
+            video.setAttribute("autoplay", "true");
+            video.setAttribute("muted", "false");
+        } else {
+            video.setAttribute("muted", "true");
+        }
 
-            if (hasAudio) {
-                video.play().catch(() => {
-                    console.warn("Autoplay dengan suara diblokir. Klik layar untuk memutar.");
-                });
-            }
-        };
-
-        document.body.addEventListener("click", () => {
-            if (hasAudio && video.paused) {
-                video.play();
-            }
+        video.addEventListener('loadeddata', () => {
+            video.play().catch(err => {
+                console.warn("Autoplay with sound blocked. Click to play.");
+            });
         });
     } else if (["jpg", "jpeg", "png", "gif"].includes(arType)) {
-        const img = new Image();
-        img.src = objectUrl;
-        img.onload = () => {
-            const aspectRatio = img.naturalWidth / img.naturalHeight;
-            object = document.createElement("a-image");
-            object.setAttribute("src", objectUrl);
-            object.setAttribute("width", "1");
-            object.setAttribute("height", (1 / aspectRatio).toFixed(2));
-            object.setAttribute("position", "0 1.2 -3");
-            arContent.appendChild(object);
-        };
+        const img = document.createElement("a-image");
+        img.setAttribute("src", objectUrl);
+        img.setAttribute("width", "1");
+        img.setAttribute("height", "1"); // Set a default height
+        img.setAttribute("position", "0 1.2 -3");
+        arContent.appendChild(img);
     }
 }
