@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Camera & View</title>
+    <title>AR Camera</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://rawgit.com/jeromeetienne/AR.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
     <style>
@@ -47,9 +47,9 @@
 <body style="margin: 0; overflow: hidden;">
     <div id="overlay"></div>
 
-    <a-scene embedded arjs="debugUIEnabled: true; sourceType: webcam; maxDetectionRate: 60;">
+    <a-scene embedded arjs="debugUIEnabled: false" vr-mode-ui="enabled: false">
         <a-marker-camera preset="custom"></a-marker-camera>
-        <a-entity id="arContent" position="0 1.2 -2"></a-entity>
+        <a-entity camera look-controls camera="near: 0.1; far: 10000; fov: 80;" id="arContent" position="0 1.2 -2"></a-entity>
         <a-light type="directional" intensity="0.8" position="1 1 1"></a-light>
     </a-scene>
 
