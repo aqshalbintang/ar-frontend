@@ -47,7 +47,7 @@
 <body style="margin: 0; overflow: hidden;">
     <div id="overlay"></div>
 
-    <a-scene embedded arjs="debugUIEnabled: false" vr-mode-ui="enabled: false">
+    <a-scene embedded arjs="debugUIEnabled: true; sourceType: webcam; maxDetectionRate: 60;">
         <a-marker-camera preset="custom"></a-marker-camera>
         <a-entity id="arContent" position="0 1.2 -2"></a-entity>
         <a-light type="directional" intensity="0.8" position="1 1 1"></a-light>
