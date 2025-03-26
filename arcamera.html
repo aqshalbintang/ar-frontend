@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Camera</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">    <title>AR Camera</title>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>    <style>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>    
+    <style>
         #overlay {
             display: none;
             position: fixed;
@@ -98,7 +98,6 @@
 
         let videoElement = null;
 
-        /* global AFRAME */
         AFRAME.registerComponent('play-on-click', {
             init: function () {
                 this.onClick = this.onClick.bind(this);
