@@ -164,7 +164,7 @@
                     video.setAttribute("src", objectUrl);
                     video.setAttribute("width", "1.2");
                     video.setAttribute("height", (1.2 / aspectRatio).toFixed(2));
-                    video.setAttribute("position", "0 0 -1");
+                    video.setAttribute("position", "0 0 0");
                     video.setAttribute("look-at", "[camera]");
                     video.setAttribute("play-on-click", ""); // Tambahkan komponen play-on-click
                     arContent.appendChild(video);
@@ -188,7 +188,7 @@
                     image.setAttribute("src", objectUrl);
                     image.setAttribute("width", "1.2");
                     image.setAttribute("height", (1.2 / aspectRatio).toFixed(2));
-                    image.setAttribute("position", "0 0 -1");
+                    image.setAttribute("position", "0 0 0");
                     image.setAttribute("look-at", "[camera]");
                     arContent.appendChild(image);
                 };
