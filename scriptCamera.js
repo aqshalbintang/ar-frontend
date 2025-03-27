@@ -36,6 +36,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 });
 
+let videoElement = null;
+
 AFRAME.registerComponent('play-on-click', {
     init: function () {
         this.onClick = this.onClick.bind(this);
