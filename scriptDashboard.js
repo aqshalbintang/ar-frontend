@@ -52,13 +52,6 @@ async function fetchData() {
 
     } catch (error) {
         console.error("Error:", error);
-
-        alert("Sesi Anda telah berakhir. Anda akan diarahkan ke halaman awal...");
-        localStorage.removeItem("token");
-
-        setTimeout(() => {
-            window.location.href = "/";
-        }, 2000);
     }
 }
 
