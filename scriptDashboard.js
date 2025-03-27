@@ -28,7 +28,7 @@ async function fetchData() {
     }
 
     try {
-        let response = await fetch("http://localhost:8080/api/user", {
+        let response = await fetch(`${apiUrl}/api/user`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -52,6 +52,13 @@ async function fetchData() {
 
     } catch (error) {
         console.error("Error:", error);
+
+        alert("Sesi Anda telah berakhir. Anda akan diarahkan ke halaman awal...");
+        localStorage.removeItem("token");
+
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 1000);
     }
 }
 
