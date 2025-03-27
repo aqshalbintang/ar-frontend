@@ -6,11 +6,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
+    let arActive = false;
+
     try {
         const response = await fetch("https://ar-backend-production.up.railway.app/api/targets");
         const targets = await response.json();
         const scene = document.querySelector("a-scene");
-        const arContent = document.getElementById("arContent");
 
         targets.forEach(target => {
             if (target.patternFileUrl && target.objectUrl) {
@@ -19,19 +20,21 @@ document.addEventListener("DOMContentLoaded", async function () {
                 marker.setAttribute("url", target.patternFileUrl);
 
                 marker.addEventListener("markerFound", () => {
-                    loadARContent(target.objectUrl, target.hasAudio);
+                    if (!arActive) {
+                    arActive = true;
+                    loadARContent(target.objectUrl, target.hasAudio, () => {;
+                        arActive = false;
                 });
+            }
+        });
 
                 scene.appendChild(marker);
             }
         });
-
     } catch (error) {
         console.error("Gagal mengambil data marker:", error);
     }
 });
-
-let videoElement = null;
 
 AFRAME.registerComponent('play-on-click', {
     init: function () {
@@ -71,17 +74,15 @@ function loadARContent(objectUrl, hasAudio) {
         videoElement.crossOrigin = "anonymous";
         videoElement.playsInline = true;
         videoElement.autoplay = true;
-        videoElement.muted = true; // Mulai dengan mute untuk bypass autoplay policy
-        videoElement.style.display = "none"; // Sembunyikan elemen video asli
+        videoElement.muted = true;
+        videoElement.style.display = "none";
 
-        // Tambahkan video ke DOM sebelum pemutaran
         arContent.appendChild(videoElement);
 
         videoElement.onloadeddata = () => {
             videoElement.play().then(() => {
                 console.log("Video autoplay berhasil");
 
-                // Aktifkan audio setelah video mulai
                 if (hasAudio) {
                     setTimeout(() => {
                         videoElement.muted = false;
@@ -92,19 +93,16 @@ function loadARContent(objectUrl, hasAudio) {
                 console.warn("Autoplay gagal, meminta user action:", e);
             });
 
-            // Tambahkan video ke AR
             const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
             const video = document.createElement("a-video");
             video.setAttribute("src", objectUrl);
-            video.setAttribute("width", "1.2");
-            video.setAttribute("height", (1.2 / aspectRatio).toFixed(2));
-            video.setAttribute("position", "0 0 -1");
-            video.setAttribute("look-at", "[camera]");
-            video.setAttribute("play-on-click", ""); // Tambahkan komponen play-on-click
+            video.setAttribute("width", "1.25");
+            video.setAttribute("height", (1.25 / aspectRatio).toFixed(2));
+            video.setAttribute("position", "0 0 -1"); 
+            video.setAttribute("play-on-click", "");
             arContent.appendChild(video);
         };
 
-        // Trik tambahan: Sentuhan pertama memaksa video play
         function enableAutoplay() {
             videoElement.play();
             document.removeEventListener("click", enableAutoplay);
@@ -120,14 +118,14 @@ function loadARContent(objectUrl, hasAudio) {
             const aspectRatio = img.naturalWidth / img.naturalHeight;
             const image = document.createElement("a-image");
             image.setAttribute("src", objectUrl);
-            image.setAttribute("width", "1.2");
-            image.setAttribute("height", (1.2 / aspectRatio).toFixed(2));
-            image.setAttribute("position", "0 0 -1");
-            image.setAttribute("look-at", "[camera]");
+            image.setAttribute("width", "1.25");
+            image.setAttribute("height", (1.25 / aspectRatio).toFixed(2));
+            image.setAttribute("position", "0 0 -1"); 
             arContent.appendChild(image);
         };
     }
 }
+
 document.getElementById("closeButton").addEventListener("click", () => {
     location.reload();
 });

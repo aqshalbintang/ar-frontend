@@ -40,6 +40,16 @@ function handleResizeSidebar() {
 window.addEventListener('resize', handleResizeSidebar);
 window.addEventListener('load', handleResizeSidebar);
 
+document.addEventListener("DOMContentLoaded", () => {
+    if (!localStorage.getItem("token")) {
+        if (!sessionStorage.getItem("loginChecked")) {
+            alert("Anda harus login terlebih dahulu!");
+            sessionStorage.setItem("loginChecked", "true");
+            window.location.href = "login.html";
+        }
+    }
+});
+
 async function fetchMarker() {
     try {
         const response = await fetch(`${apiUrl}/api/targets`);
@@ -159,66 +169,59 @@ function createRow(target, index, isVideo) {
 
 displayMarker();
 
-const searchInputMarker = document.getElementById("search-box-marker");
+const searchInputImage = document.getElementById("search-box-marker-image");
+const searchInputVideo = document.getElementById("search-box-marker-video");
 
-function searchMarkers() {
-    const query = searchInputMarker.value.toLowerCase();
+function searchImageMarkers() {
+    const query = searchInputImage.value.toLowerCase();
     if (!query) {
-        displayMarker();
+        displayImageMarkers();
         return;
     }
     
     const filteredMarkers = totalMarker.filter(marker => 
-        marker.title.toLowerCase().includes(query) || 
-        marker.description.toLowerCase().includes(query)
+        marker.objectUrl && /\.(png|jpg|jpeg)$/i.test(marker.objectUrl) &&
+        (marker.title.toLowerCase().includes(query) || marker.description.toLowerCase().includes(query))
     );
     
-    displayFilteredMarkers(filteredMarkers);
+    displayFilteredImageMarkers(filteredMarkers);
 }
 
-function displayFilteredMarkers(filteredData) {
-    const imageTableBody = document.getElementById("table-marker-image");
-    const videoTableBody = document.getElementById("table-marker-video");
+function searchVideoMarkers() {
+    const query = searchInputVideo.value.toLowerCase();
+    if (!query) {
+        displayVideoMarkers();
+        return;
+    }
     
+    const filteredMarkers = totalMarker.filter(marker => 
+        marker.objectUrl && /\.(mp4|webm)$/i.test(marker.objectUrl) &&
+        (marker.title.toLowerCase().includes(query) || marker.description.toLowerCase().includes(query))
+    );
+    
+    displayFilteredVideoMarkers(filteredMarkers);
+}
+
+function displayFilteredImageMarkers(filteredData) {
+    const imageTableBody = document.getElementById("table-marker-image");
     imageTableBody.innerHTML = "";
-    videoTableBody.innerHTML = "";
     
     filteredData.forEach((marker, index) => {
-        const row = document.createElement("tr");
-        const createdAt = new Date(marker.createdAt);
-        const formattedDate = createdAt.toLocaleDateString("id-ID");
-        
-        let previewElement = marker.objectUrl && /\.(mp4|webm)$/i.test(marker.objectUrl) 
-            ? `<video class="preview-img" src="${marker.objectUrl}" controls
-                style="width:100px; height:100px; object-fit: cover;"></video>`
-            : `<img class="preview-img" src="${marker.objectUrl}" 
-                style="width:100px; height:100px; object-fit: cover;">`;
-
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${formattedDate}</td>
-            <td><strong>Judul:</strong> ${marker.title}</br><strong>Deskripsi:</strong> ${marker.description}</td>
-            <td><img src="${marker.markerUrl}" width="100"></td>
-            <td>${previewElement || "No preview available"}</td>
-            <td>
-                <button onclick="downloadFile('${marker.markerUrl}')" class="button-download">
-                    <i class='bx bx-download'></i> Download
-                </button></br>
-                <button onclick="deleteFile('${marker._id}')" class="button-delete">
-                    <i class='bx bx-trash-alt'></i> Delete
-                </button>
-            </td>
-        `;
-        
-        if (marker.objectUrl && /\.(png|jpg|jpeg)$/i.test(marker.objectUrl)) {
-            imageTableBody.appendChild(row);
-        } else {
-            videoTableBody.appendChild(row);
-        }
+        imageTableBody.appendChild(createRow(marker, index, false));
     });
 }
 
-searchInputMarker.addEventListener("input", searchMarkers);
+function displayFilteredVideoMarkers(filteredData) {
+    const videoTableBody = document.getElementById("table-marker-video");
+    videoTableBody.innerHTML = "";
+    
+    filteredData.forEach((marker, index) => {
+        videoTableBody.appendChild(createRow(marker, index, true));
+    });
+}
+
+searchInputImage.addEventListener("input", searchImageMarkers);
+searchInputVideo.addEventListener("input", searchVideoMarkers);
 
 async function fetchVisitor() {
     try {
@@ -509,20 +512,19 @@ window.onload = function () {
 
     const savedSection = localStorage.getItem("selectedSection");
     if (savedSection) {
-        showSection(savedSection);
+        showSection(savedSection, false);
     } else {
-        showSection("generate-marker");
+        showSection("generate-marker", true);
     }
 };
 
-function showSection(sectionId) {
-    document.querySelectorAll('.card').forEach(section => {
-        section.classList.add('hidden');
-    });
-
+function showSection(sectionId, save = true) {
+    document.querySelectorAll('section').forEach(section => section.classList.add('hidden'));
     document.getElementById(sectionId).classList.remove('hidden');
-
-    localStorage.setItem("selectedSection", sectionId);
+    
+    if (save) {
+        localStorage.setItem("selectedSection", sectionId);
+    }
 }
 
 function downloadFile(fileUrl) {
@@ -539,28 +541,6 @@ function downloadFile(fileUrl) {
             window.URL.revokeObjectURL(url);
         })
         .catch(error => console.error("Gagal mengunduh file:", error));
-}
-
-function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("selectedSection");
-
-    window.location.href = "login.html";
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    if (!localStorage.getItem("token")) {
-        if (!sessionStorage.getItem("loginChecked")) {
-            alert("Anda harus login terlebih dahulu!");
-            sessionStorage.setItem("loginChecked", "true");
-            window.location.href = "login.html";
-        }
-    }
-});
-
-function showSection(sectionId) {
-    document.querySelectorAll('section').forEach(section => section.classList.add('hidden'));
-    document.getElementById(sectionId).classList.remove('hidden');
 }
 
 async function deleteFile(fileId) {
@@ -582,6 +562,12 @@ async function deleteFile(fileId) {
     } catch (error) {
         console.error("Failed to delete file:", error);
     }
+}
+
+function logout() {
+    localStorage.removeItem("token");
+
+    window.location.href = "login.html";
 }
 
 async function fetchVisitors() {

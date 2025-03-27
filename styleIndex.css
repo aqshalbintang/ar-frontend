@@ -207,15 +207,14 @@ nav {
 .input-container {
     position: relative;
     width: 90%;
-    margin: 0 auto;
-    margin: 15px;
+    margin: 20px auto; /* Auto pada margin horizontal */
 }
 
 input {
     width: 100%;
     padding: 12px 10px 8px;
     font-size: 16px;
-    border: 2px solid #ccc;
+    border: 1px solid #888;
     border-radius: 5px;
     outline: none;
     background: transparent;
@@ -238,7 +237,7 @@ input:focus + label,
 input:not(:placeholder-shown) + label {
     top: 0;
     font-size: 14px;
-    color: #007BFF;
+    color: #888;
     transform: translateY(-50%);
 }
 
@@ -248,7 +247,7 @@ input:not(:placeholder-shown) + label {
 
 #submitFormRegistrasi,
 #submitFormLogin {
-    background: rgb(0, 185, 0);
+    background: rgb(0, 225, 0);
     color: white;
     padding: 10px 20px;
     border: none;
@@ -257,14 +256,25 @@ input:not(:placeholder-shown) + label {
     margin-bottom: 10px;
 }
 
+#submitFormRegistrasi:hover,
+#submitFormLogin:hover {
+    background: rgb(0, 150, 0);
+}
+
 #closeModalRegistrasi,
 #closeModalLogin {
-    background: #dc3545;
+    background: rgb(225, 0, 0);
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    margin-left: 5px;
+}
+
+#closeModalRegistrasi:hover,
+#closeModalLogin:hover {
+    background: rgb(150, 0, 0);
 }
 
 .panduan-container {

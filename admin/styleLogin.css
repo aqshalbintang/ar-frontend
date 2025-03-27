@@ -37,8 +37,7 @@ p {
 
 .input-container {
     position: relative;
-    width: 90%;
-    margin: 0 auto;
+    width: 85%;
     margin: 15px;
 }
 
@@ -46,7 +45,7 @@ input {
     width: 100%;
     padding: 12px 10px 8px;
     font-size: 16px;
-    border: 2px solid #ccc;
+    border: 1px solid #888;
     border-radius: 5px;
     outline: none;
     background: transparent;
@@ -69,7 +68,7 @@ input:focus + label,
 input:not(:placeholder-shown) + label {
     top: 0;
     font-size: 14px;
-    color: #007BFF;
+    color: #888;
     transform: translateY(-50%);
 }
 
