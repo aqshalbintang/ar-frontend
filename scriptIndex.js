@@ -187,7 +187,7 @@ document.getElementById("submitFormRegistrasi").addEventListener("click", functi
     })
     .catch(error => {
         console.error("Error:", error);
-        alert("Terjadi kesalahan. Silakan coba lagi.");
+        alert("Email sudah terdaftar, silahkan login.");
     });
 });
 
