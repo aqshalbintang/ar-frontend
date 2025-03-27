@@ -20,6 +20,7 @@ const formatBirthDate = (dateString) => {
 
 async function fetchData() {
     const token = localStorage.getItem("token");
+    
     if (!token) {
         alert("Anda belum login!");
         window.location.href = "/";
@@ -27,7 +28,7 @@ async function fetchData() {
     }
 
     try {
-        let response = await fetch(`${apiUrl}/api/user`, {
+        let response = await fetch("http://localhost:8080/api/user", {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -36,7 +37,7 @@ async function fetchData() {
         });
 
         if (!response.ok) {
-            throw new Error("Gagal mengambil data");
+            throw new Error("Gagal mengambil data, kemungkinan sesi Anda telah berakhir.");
         }
 
         let user = await response.json();
@@ -48,8 +49,16 @@ async function fetchData() {
             <div class="profile-item"><span class="profile-label">Tanggal Lahir :</span><span class="profile-value">${formatBirthDate(user.birthDate)}</span></div>
             <div class="profile-item"><span class="profile-label">No HP :</span><span class="profile-value">${user.phone}</span></div>
         `;
+
     } catch (error) {
         console.error("Error:", error);
+
+        alert("Sesi Anda telah berakhir. Anda akan diarahkan ke halaman awal...");
+        localStorage.removeItem("token");
+
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 2000);
     }
 }
 
