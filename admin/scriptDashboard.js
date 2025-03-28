@@ -12,6 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const toggleBtn = document.querySelector("#btn");
     const cardContents = document.querySelectorAll(".home-section .card > *:not(h2)");
     
+    if (window.innerWidth <= 768) {
+        sidebar.classList.add("closed");
+        cardContents.forEach(content => content.classList.remove("hidden"));
+    }
+    
     toggleBtn.addEventListener("click", function () {
         sidebar.classList.toggle("closed");
         
