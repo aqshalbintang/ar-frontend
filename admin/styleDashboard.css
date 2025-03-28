@@ -46,16 +46,16 @@ h2 {
 
 #markerContainer,
 #objectContainer {
-    width: 100%; /* Sesuaikan dengan lebar container */
-    max-width: 300px; /* Maksimum lebar agar tidak terlalu besar */
-    aspect-ratio: 1 / 1; /* Pastikan berbentuk persegi */
-    border: 3px dashed #ddd; /* Border agar terlihat jelas */
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 1 / 1;
+    border: 3px dashed #ddd;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Cegah elemen keluar dari border */
-    background-color: #f9f9f9; /* Latar belakang agar terlihat rapi */
+    overflow: hidden;
+    background-color: #f9f9f9;
     margin: 0 auto;
 }
 
@@ -65,9 +65,9 @@ h2 {
 }
 
 #notes {
-    background-color: #ffcccc; /* Warna merah muda untuk latar belakang */
-    border: 1px solid #ff0000; /* Garis tepi merah */
-    color: #990000; /* Warna teks merah gelap */
+    background-color: #ffcccc;
+    border: 1px solid #ff0000;
+    color: #990000;
     padding: 10px;
     border-radius: 5px;
     font-size: 13px;
@@ -317,7 +317,7 @@ td .button-delete:hover {
     align-items: center;
     text-decoration: none;
     border-radius: 8px;
-    transition: background 0.3s ease;
+    transition: 0.3s ease;
     color: #fff;
 }
 
@@ -501,5 +501,4 @@ td .button-delete:hover {
         opacity: 0;
         transition: visibility 0s linear 0.3s, opacity 0.3s ease;
     }
-    
 }
