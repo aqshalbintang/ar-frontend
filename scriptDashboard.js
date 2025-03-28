@@ -22,7 +22,7 @@ async function fetchData() {
     const token = localStorage.getItem("token");
     
     if (!token) {
-        alert("Anda belum login!");
+        alert("Silahkan registrasi atau login dahulu");
         window.location.href = "/";
         return;
     }

@@ -41,13 +41,34 @@ window.addEventListener('resize', handleResizeSidebar);
 window.addEventListener('load', handleResizeSidebar);
 
 document.addEventListener("DOMContentLoaded", () => {
-    if (!localStorage.getItem("token")) {
-        if (!sessionStorage.getItem("loginChecked")) {
-            alert("Anda harus login terlebih dahulu!");
-            sessionStorage.setItem("loginChecked", "true");
-            window.location.href = "login.html";
-        }
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        console.log("Token tidak ditemukan, redirect ke login.");
+        window.location.href = "login.html";
+        return;
     }
+
+    fetch(`${apiUrl}/api/admin/dashboard`, {
+        method: "GET",
+        headers: { "Authorization": `Bearer ${token}` }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === "Token tidak valid atau sudah kedaluwarsa") {
+            console.log("Token kadaluarsa, menghapus token...");
+            localStorage.removeItem("token");
+            alert("Sesi Anda telah habis, silakan login kembali.");
+            window.location.href = "login.html";
+        } else {
+            console.log("Token valid, akses diberikan kepada admin.");
+        }
+    })
+    .catch(error => {
+        console.log("Kesalahan saat verifikasi token:", error);
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
+    });
 });
 
 async function fetchMarker() {
@@ -566,7 +587,6 @@ async function deleteFile(fileId) {
 
 function logout() {
     localStorage.removeItem("token");
-
     window.location.href = "login.html";
 }
 

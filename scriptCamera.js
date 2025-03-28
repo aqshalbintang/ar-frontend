@@ -8,10 +8,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     let arActive = false;
 
+    const scene = document.querySelector("a-scene");
+    if (!scene) {
+        console.error("Elemen <a-scene> tidak ditemukan! Pastikan ada dalam HTML.");
+        return;
+    }
+
     try {
         const response = await fetch("https://ar-backend-production.up.railway.app/api/targets");
         const targets = await response.json();
-        const scene = document.querySelector("a-scene");
+
+        if (!targets || !Array.isArray(targets) || targets.length === 0) {
+            console.error("Data marker kosong atau tidak valid:", targets);
+            return;
+        }
 
         targets.forEach(target => {
             if (target.patternFileUrl && target.objectUrl) {
@@ -21,12 +31,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 marker.addEventListener("markerFound", () => {
                     if (!arActive) {
-                    arActive = true;
-                    loadARContent(target.objectUrl, target.hasAudio, () => {;
-                        arActive = false;
+                        arActive = true;
+                        loadARContent(target.objectUrl, target.hasAudio, () => {
+                            ;
+                            arActive = false;
+                        });
+                    }
                 });
-            }
-        });
 
                 scene.appendChild(marker);
             }
@@ -49,7 +60,7 @@ AFRAME.registerComponent('play-on-click', {
         window.removeEventListener('click', this.onClick);
     },
     onClick: function () {
-        var videoEl = this.el.getAttribute('material').src;
+        var videoEl = document.querySelector("video");
         if (!videoEl) return;
         this.el.object3D.visible = true;
         videoEl.play().catch(err => console.warn("Autoplay gagal, user harus klik:", err));
@@ -100,7 +111,7 @@ function loadARContent(objectUrl, hasAudio) {
             video.setAttribute("src", objectUrl);
             video.setAttribute("width", "1.25");
             video.setAttribute("height", (1.25 / aspectRatio).toFixed(2));
-            video.setAttribute("position", "0 0 -1"); 
+            video.setAttribute("position", "0 0 -1");
             video.setAttribute("play-on-click", "");
             arContent.appendChild(video);
         };
@@ -122,7 +133,7 @@ function loadARContent(objectUrl, hasAudio) {
             image.setAttribute("src", objectUrl);
             image.setAttribute("width", "1.25");
             image.setAttribute("height", (1.25 / aspectRatio).toFixed(2));
-            image.setAttribute("position", "0 0 -1"); 
+            image.setAttribute("position", "0 0 -1");
             arContent.appendChild(image);
         };
     }
