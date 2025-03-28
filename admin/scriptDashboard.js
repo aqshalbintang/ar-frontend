@@ -69,65 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 });
 
-async function fetchMarker() {
-    try {
-        const response = await fetch(`${apiUrl}/api/targets`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        totalMarker = await response.json();
-    } catch (error) {
-        console.error("Gagal mengambil data:", error);
-        totalMarker = [];
-    }
-    displayMarker();
-}
-
-function displayMarker() {
-    displayImageMarkers();
-    displayVideoMarkers();
-}
-
-function displayImageMarkers() {
-    const imageTableBody = document.getElementById("table-marker-image");
-    const prevButtonImage = document.getElementById("prevButtonImage");
-    const nextButtonImage = document.getElementById("nextButtonImage");
-
-    imageTableBody.innerHTML = "";
-
-    const imageData = totalMarker.filter(target => target.objectUrl && /\.(png|jpg|jpeg)$/i.test(target.objectUrl));
-    const startIndex = (currentPageImage - 1) * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
-    const paginatedImageData = imageData.slice(startIndex, endIndex);
-
-    paginatedImageData.forEach((target, index) => {
-        imageTableBody.appendChild(createRow(target, index, false));
-    });
-
-    prevButtonImage.disabled = currentPageImage === 1;
-    nextButtonImage.disabled = endIndex >= imageData.length;
-}
-
-function displayVideoMarkers() {
-    const videoTableBody = document.getElementById("table-marker-video");
-    const prevButtonVideo = document.getElementById("prevButtonVideo");
-    const nextButtonVideo = document.getElementById("nextButtonVideo");
-
-    videoTableBody.innerHTML = "";
-
-    const videoData = totalMarker.filter(target => target.objectUrl && /\.(mp4|webm)$/i.test(target.objectUrl));
-    const startIndex = (currentPageVideo - 1) * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
-    const paginatedVideoData = videoData.slice(startIndex, endIndex);
-
-    paginatedVideoData.forEach((target, index) => {
-        videoTableBody.appendChild(createRow(target, index, true));
-    });
-
-    prevButtonVideo.disabled = currentPageVideo === 1;
-    nextButtonVideo.disabled = endIndex >= videoData.length;
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     displayMarker();
 });
@@ -242,6 +183,15 @@ function displayFilteredVideoMarkers(filteredData) {
 searchInputImage.addEventListener("input", searchImageMarkers);
 searchInputVideo.addEventListener("input", searchVideoMarkers);
 
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById("table-visitor")) {
+        fetchVisitor();
+    }
+    if (document.getElementById("table-marker-image") || document.getElementById("table-marker-video")) {
+        fetchMarker();
+    }
+});
+
 async function fetchVisitor() {
     try {
         const response = await fetch(`${apiUrl}/api/visitors`);
@@ -256,11 +206,9 @@ async function fetchVisitor() {
     displayVisitors();
 }
 
-const prevButtonVisitor = document.getElementById("prevPageVisitor");
-const nextButtonVisitor = document.getElementById("nextPageVisitor");
-
 function displayVisitors() {
     const tableBody = document.getElementById("table-visitor");
+    if (!tableBody) return;
     tableBody.innerHTML = "";
 
     const startIndex = (currentPageVisitor - 1) * rowsPerPageVisitor;
@@ -269,9 +217,7 @@ function displayVisitors() {
 
     paginatedData.forEach((visitor, index) => {
         const row = document.createElement("tr");
-
-        const createdAt = new Date(visitor.createdAt);
-        const formattedDate = createdAt.toLocaleDateString("id-ID");
+        const formattedDate = new Date(visitor.createdAt).toLocaleDateString("id-ID");
 
         row.innerHTML = `
             <td>${startIndex + index + 1}</td>
@@ -281,13 +227,82 @@ function displayVisitors() {
             <td>${visitor.birthDate}</td>
             <td>${visitor.phone}</td>
         `;
-
         tableBody.appendChild(row);
     });
 
-    prevButtonVisitor.disabled = currentPageVisitor === 1;
-    nextButtonVisitor.disabled = endIndex >= totalVisitors.length;
+    const prevButton = document.getElementById("prevPageVisitor");
+    const nextButton = document.getElementById("nextPageVisitor");
+    if (prevButton && nextButton) {
+        prevButton.disabled = currentPageVisitor === 1;
+        nextButton.disabled = endIndex >= totalVisitors.length;
+    }
 }
+
+async function fetchMarker() {
+    try {
+        const response = await fetch(`${apiUrl}/api/targets`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        totalMarker = await response.json();
+    } catch (error) {
+        console.error("Gagal mengambil data marker:", error);
+        totalMarker = [];
+    }
+    displayMarker();
+}
+
+function displayMarker() {
+    displayImageMarkers();
+    displayVideoMarkers();
+}
+
+function displayImageMarkers() {
+    const imageTableBody = document.getElementById("table-marker-image");
+    if (!imageTableBody) return;
+    imageTableBody.innerHTML = "";
+
+    const imageData = totalMarker.filter(target => target.objectUrl && /\.(png|jpg|jpeg)$/i.test(target.objectUrl));
+    const startIndex = (currentPageImage - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const paginatedImageData = imageData.slice(startIndex, endIndex);
+
+    paginatedImageData.forEach((target, index) => {
+        imageTableBody.appendChild(createRow(target, index, false));
+    });
+
+    const prevButton = document.getElementById("prevButtonImage");
+    const nextButton = document.getElementById("nextButtonImage");
+    if (prevButton && nextButton) {
+        prevButton.disabled = currentPageImage === 1;
+        nextButton.disabled = endIndex >= imageData.length;
+    }
+}
+
+function displayVideoMarkers() {
+    const videoTableBody = document.getElementById("table-marker-video");
+    if (!videoTableBody) return;
+    videoTableBody.innerHTML = "";
+
+    const videoData = totalMarker.filter(target => target.objectUrl && /\.(mp4|webm)$/i.test(target.objectUrl));
+    const startIndex = (currentPageVideo - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const paginatedVideoData = videoData.slice(startIndex, endIndex);
+
+    paginatedVideoData.forEach((target, index) => {
+        videoTableBody.appendChild(createRow(target, index, true));
+    });
+
+    const prevButton = document.getElementById("prevButtonVideo");
+    const nextButton = document.getElementById("nextButtonVideo");
+    if (prevButton && nextButton) {
+        prevButton.disabled = currentPageVideo === 1;
+        nextButton.disabled = endIndex >= videoData.length;
+    }
+}
+
+const prevButtonVisitor = document.getElementById("prevPageVisitor");
+const nextButtonVisitor = document.getElementById("nextPageVisitor");
 
 const searchInputVisitor = document.getElementById("search-box-visitor");
 
@@ -525,7 +540,7 @@ function updateObjectPreview() {
     objectContainer.appendChild(videoElement);
 }
 
-window.onload = function () {
+document.addEventListener("DOMContentLoaded", function () {
     fetchMarker();
     fetchVisitor();
 
@@ -535,7 +550,7 @@ window.onload = function () {
     } else {
         showSection("generate-marker", true);
     }
-};
+});
 
 function showSection(sectionId, save = true) {
     document.querySelectorAll('section').forEach(section => section.classList.add('hidden'));
