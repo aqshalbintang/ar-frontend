@@ -80,11 +80,22 @@ particlesJS('particles-js', {
     retina_detect: true
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    fetchVisitors();
+    fetchMarkers();
+});
+
 async function fetchVisitors() {
     try {
+        const visitorCountElement = document.getElementById('visitorCount');
+        if (!visitorCountElement) {
+            console.error("Element with ID 'visitorCount' not found.");
+            return;
+        }
+        
         const response = await fetch(`${apiUrl}/api/totalvisitors`);
         const data = await response.json();
-        document.getElementById('visitorCount').innerText = data.visitors;
+        visitorCountElement.innerText = data.visitors;
     } catch (error) {
         console.error('Error fetching visitors:', error);
     }
@@ -92,16 +103,19 @@ async function fetchVisitors() {
 
 async function fetchMarkers() {
     try {
+        const markerCountElement = document.getElementById('markerCount');
+        if (!markerCountElement) {
+            console.error("Element with ID 'markerCount' not found.");
+            return;
+        }
+
         const response = await fetch(`${apiUrl}/api/totalmarkers`);
         const data = await response.json();
-        document.getElementById('markerCount').innerText = data.markers;
+        markerCountElement.innerText = data.markers;
     } catch (error) {
         console.error('Error fetching markers:', error);
     }
 }
-
-fetchVisitors();
-fetchMarkers();
 
 document.getElementById("formRegistrasi").addEventListener("click", function(event) {
     event.preventDefault();
@@ -139,35 +153,15 @@ document.getElementById("submitFormRegistrasi").addEventListener("click", functi
 
     let errors = [];
 
-    if (name === "" || name.length < 4) {
-        errors.push("Nama harus diisi dan minimal 3 karakter.");
-    }
-
-    let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(email)) {
-        errors.push("Format email tidak valid.");
-    }
-
-    if (birthDate === "") {
-        errors.push("Tanggal lahir harus diisi.");
-    } else {
-        let birthDateObj = new Date(birthDate);
-        let today = new Date();
-        let age = today.getFullYear() - birthDateObj.getFullYear();
-        if (age < 10) {
-            errors.push("Usia minimal harus 10 tahun.");
-        }
-    }
-
-    let phonePattern = /^[0-9]{10,15}$/;
-    if (!phonePattern.test(phone)) {
-        errors.push("Nomor telepon harus terdiri dari 10 hingga 15 digit angka.");
-    }
-
-    if (errors.length > 0) {
-        alert(errors.join("\n"));
-        return;
-    }
+    if (!name || name.length < 4) errors.push("Nama minimal 3 karakter.");
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) errors.push("Format email tidak valid.");
+    if (!birthDate) errors.push("Tanggal lahir harus diisi.");
+    if (birthDate && new Date().getFullYear() - new Date(birthDate).getFullYear() < 10) 
+        errors.push("Usia minimal 10 tahun.");
+    if (!/^[0-9]{10,15}$/.test(phone)) errors.push("Nomor telepon harus 10-15 digit.");
+    
+    if (errors.length) return alert(errors.join("\n"));
+    
 
     fetch(`${apiUrl}/api/visitors`, {
         method: "POST",
@@ -195,18 +189,10 @@ document.getElementById("submitFormLogin").addEventListener("click", function(ev
     event.preventDefault();
 
     let email = document.getElementById("emailLogin").value.trim();
-    let errors = [];
 
-    let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(email)) {
-        errors.push("Format email tidak valid.");
-    }
-
-    if (errors.length > 0) {
-        alert(errors.join("\n"));
-        return;
-    }
-
+    if (!/^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) 
+        return alert("Format email tidak valid.");
+    
     fetch(`${apiUrl}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -238,26 +224,31 @@ document.getElementById("formRegistrasi").addEventListener("click", function () 
     }
 });
 
-const text = "AR Platform";
-let index = 0;
-
-function typeEffect() {
-  const typingText = document.getElementById("typing-text");
-  if (index < text.length) {
-    typingText.innerHTML += text.charAt(index);
-    index++;
-    setTimeout(typeEffect, 200);
-  } else {
-    setTimeout(() => {
-      typingText.innerHTML = "";
-      index = 0;
-      typeEffect();
-    }, 5000);
-  }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  typeEffect();
+    const typingText = document.getElementById("typing-text");
+
+    if (typingText) {
+        const text = "AR Platform";
+        let index = 0;
+
+        function typeEffect() {
+            if (index < text.length) {
+                typingText.innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeEffect, 200);
+            } else {
+                setTimeout(() => {
+                    typingText.innerHTML = "";
+                    index = 0;
+                    typeEffect();
+                }, 5000);
+            }
+        }
+
+        typeEffect();
+    } else {
+        console.error("Element with ID 'typing-text' not found.");
+    }
 });
 
 document.addEventListener("DOMContentLoaded", function () {

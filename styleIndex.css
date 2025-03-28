@@ -207,7 +207,7 @@ nav {
 .input-container {
     position: relative;
     width: 90%;
-    margin: 20px auto; /* Auto pada margin horizontal */
+    margin: 20px auto;
 }
 
 input {
@@ -247,7 +247,7 @@ input:not(:placeholder-shown) + label {
 
 #submitFormRegistrasi,
 #submitFormLogin {
-    background: rgb(0, 225, 0);
+    background: rgb(0, 175, 0);
     color: white;
     padding: 10px 20px;
     border: none;
@@ -258,12 +258,12 @@ input:not(:placeholder-shown) + label {
 
 #submitFormRegistrasi:hover,
 #submitFormLogin:hover {
-    background: rgb(0, 150, 0);
+    background: rgb(0, 100, 0);
 }
 
 #closeModalRegistrasi,
 #closeModalLogin {
-    background: rgb(225, 0, 0);
+    background: rgb(175, 0, 0);
     color: white;
     padding: 10px 20px;
     border: none;
@@ -274,7 +274,7 @@ input:not(:placeholder-shown) + label {
 
 #closeModalRegistrasi:hover,
 #closeModalLogin:hover {
-    background: rgb(150, 0, 0);
+    background: rgb(100, 0, 0);
 }
 
 .panduan-container {

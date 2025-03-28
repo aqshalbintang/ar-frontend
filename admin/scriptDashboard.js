@@ -53,22 +53,20 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "GET",
         headers: { "Authorization": `Bearer ${token}` }
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message === "Token tidak valid atau sudah kedaluwarsa") {
-            console.log("Token kadaluarsa, menghapus token...");
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === "Token tidak valid atau sudah kedaluwarsa") {
+                console.log("Token kadaluarsa, menghapus token...");
+                localStorage.removeItem("token");
+                alert("Sesi Anda telah habis, silakan login kembali.");
+                window.location.href = "login.html";
+            }
+        })
+        .catch(error => {
+            console.log("Kesalahan saat verifikasi token:", error);
             localStorage.removeItem("token");
-            alert("Sesi Anda telah habis, silakan login kembali.");
             window.location.href = "login.html";
-        } else {
-            console.log("Token valid, akses diberikan kepada admin.");
-        }
-    })
-    .catch(error => {
-        console.log("Kesalahan saat verifikasi token:", error);
-        localStorage.removeItem("token");
-        window.location.href = "login.html";
-    });
+        });
 });
 
 async function fetchMarker() {
@@ -164,7 +162,7 @@ function createRow(target, index, isVideo) {
     const createdAt = new Date(target.createdAt);
     const formattedDate = createdAt.toLocaleDateString("id-ID");
 
-    let previewElement = isVideo 
+    let previewElement = isVideo
         ? `<video class="preview-img" src="${target.objectUrl}" controls
             style="width:100px; height:100px; object-fit: cover;"></video>`
         : `<img class="preview-img" src="${target.objectUrl}" 
@@ -199,12 +197,12 @@ function searchImageMarkers() {
         displayImageMarkers();
         return;
     }
-    
-    const filteredMarkers = totalMarker.filter(marker => 
+
+    const filteredMarkers = totalMarker.filter(marker =>
         marker.objectUrl && /\.(png|jpg|jpeg)$/i.test(marker.objectUrl) &&
         (marker.title.toLowerCase().includes(query) || marker.description.toLowerCase().includes(query))
     );
-    
+
     displayFilteredImageMarkers(filteredMarkers);
 }
 
@@ -214,19 +212,19 @@ function searchVideoMarkers() {
         displayVideoMarkers();
         return;
     }
-    
-    const filteredMarkers = totalMarker.filter(marker => 
+
+    const filteredMarkers = totalMarker.filter(marker =>
         marker.objectUrl && /\.(mp4|webm)$/i.test(marker.objectUrl) &&
         (marker.title.toLowerCase().includes(query) || marker.description.toLowerCase().includes(query))
     );
-    
+
     displayFilteredVideoMarkers(filteredMarkers);
 }
 
 function displayFilteredImageMarkers(filteredData) {
     const imageTableBody = document.getElementById("table-marker-image");
     imageTableBody.innerHTML = "";
-    
+
     filteredData.forEach((marker, index) => {
         imageTableBody.appendChild(createRow(marker, index, false));
     });
@@ -235,7 +233,7 @@ function displayFilteredImageMarkers(filteredData) {
 function displayFilteredVideoMarkers(filteredData) {
     const videoTableBody = document.getElementById("table-marker-video");
     videoTableBody.innerHTML = "";
-    
+
     filteredData.forEach((marker, index) => {
         videoTableBody.appendChild(createRow(marker, index, true));
     });
@@ -299,23 +297,23 @@ function searchVisitors() {
         displayVisitors();
         return;
     }
-    
-    const filteredVisitors = totalVisitors.filter(visitor =>  
+
+    const filteredVisitors = totalVisitors.filter(visitor =>
         visitor.email.toLowerCase().includes(query)
     );
-    
+
     displayFilteredVisitors(filteredVisitors);
 }
 
 function displayFilteredVisitors(filteredData) {
     const tableBody = document.getElementById("table-visitor");
     tableBody.innerHTML = "";
-    
+
     filteredData.forEach((visitor, index) => {
         const row = document.createElement("tr");
         const createdAt = new Date(visitor.createdAt);
         const formattedDate = createdAt.toLocaleDateString("id-ID");
-        
+
         row.innerHTML = `
             <td>${index + 1}</td>
             <td>${formattedDate}</td>
@@ -324,7 +322,7 @@ function displayFilteredVisitors(filteredData) {
             <td>${visitor.birthDate}</td>
             <td>${visitor.phone}</td>
         `;
-        
+
         tableBody.appendChild(row);
     });
 }
@@ -486,8 +484,8 @@ document.getElementById('fileinputObject').addEventListener('change', function (
 
     for (const file of files) {
         const fileSize = file.size / 1024;
-        if (fileSize < 1024 || fileSize > 20480) {
-            alert(`File harus berukuran 1MB sampai 20MB. Silakan pilih file lain.`);
+        if (fileSize < 500 || fileSize > 20480) {
+            alert(`File harus berukuran minimal 500kb sampai 20MB. Silakan pilih file lain.`);
             event.target.value = '';
             objectContainer.innerHTML = '';
             return;
@@ -542,7 +540,7 @@ window.onload = function () {
 function showSection(sectionId, save = true) {
     document.querySelectorAll('section').forEach(section => section.classList.add('hidden'));
     document.getElementById(sectionId).classList.remove('hidden');
-    
+
     if (save) {
         localStorage.setItem("selectedSection", sectionId);
     }
@@ -578,7 +576,7 @@ async function deleteFile(fileId) {
         }
 
         console.log("File deleted successfully");
-        
+
         location.reload();
     } catch (error) {
         console.error("Failed to delete file:", error);
@@ -590,29 +588,35 @@ function logout() {
     window.location.href = "login.html";
 }
 
-async function fetchVisitors() {
-    try {
-        const response = await fetch(`${apiUrl}/api/totalvisitors`);
-        const data = await response.json();
-        document.getElementById('visitorCount').innerText = `Total Visitor : ${data.visitors}`;
-    } catch (error) {
-        console.error('Error fetching visitors:', error);
+document.addEventListener('DOMContentLoaded', function () {
+    async function fetchVisitors() {
+        try {
+            let visitorElement = document.getElementById('visitorCount');
+
+            const response = await fetch(`${apiUrl}/api/totalvisitors`);
+            const data = await response.json();
+
+            visitorElement.innerText = `Total Visitor : ${data.visitors}`;
+        } catch (error) {
+            console.error('Error fetching visitors:', error);
+        }
     }
-}
 
-async function fetchMarkerCounts() {
-    try {
-        const response = await fetch(`${apiUrl}/api/marker-count`);
-        const data = await response.json();
+    async function fetchMarkerCounts() {
+        try {
+            let imageElement = document.getElementById('imageCount');
+            let videoElement = document.getElementById('videoCount');
 
-        document.getElementById('imageCount').innerText = `Total Image : ${data.imageCount}`;
-        document.getElementById('videoCount').innerText = `Total Video : ${data.videoCount}`;
-    } catch (error) {
-        console.error('Error fetching marker counts:', error);
+            const response = await fetch(`${apiUrl}/api/marker-count`);
+            const data = await response.json();
+
+            imageElement.innerText = `Total Image : ${data.imageCount}`;
+            videoElement.innerText = `Total Video : ${data.videoCount}`;
+        } catch (error) {
+            console.error('Error fetching marker counts:', error);
+        }
     }
-}
 
-document.addEventListener('DOMContentLoaded', fetchMarkerCounts);
-
-fetchVisitors();
-fetchMarkerCounts();
+    fetchVisitors();
+    fetchMarkerCounts();
+});
