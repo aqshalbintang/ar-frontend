@@ -158,7 +158,7 @@ document.getElementById("submitFormRegistrasi").addEventListener("click", functi
     if (!birthDate) errors.push("Tanggal lahir harus diisi.");
     if (birthDate && new Date().getFullYear() - new Date(birthDate).getFullYear() < 10) 
         errors.push("Usia minimal 10 tahun.");
-    if (!/^[0-9]{10,15}$/.test(phone)) errors.push("Nomor telepon harus 10-15 digit.");
+    if (!/^[0-9]{7,13}$/.test(phone)) errors.push("Nomor telepon harus 7-13 digit.");
     
     if (errors.length) return alert(errors.join("\n"));
     

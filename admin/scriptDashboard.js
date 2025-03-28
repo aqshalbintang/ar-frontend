@@ -7,11 +7,24 @@ let totalMarker = [];
 let totalVisitors = [];
 const apiUrl = "https://ar-backend-production.up.railway.app";
 
-let sidebar = document.querySelector(".sidebar");
-let toggleBtn = document.querySelector("#btn");
-
-toggleBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("closed");
+document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.querySelector(".sidebar");
+    const toggleBtn = document.querySelector("#btn");
+    const cardContents = document.querySelectorAll(".home-section .card > *:not(h2)");
+    
+    toggleBtn.addEventListener("click", function () {
+        sidebar.classList.toggle("closed");
+        
+        if (window.innerWidth <= 768) {
+            if (sidebar.classList.contains("closed")) {
+                cardContents.forEach(content => content.classList.remove("hidden"));
+            } else {
+                cardContents.forEach(content => content.classList.add("hidden"));
+            }
+        } else {
+            cardContents.forEach(content => content.classList.remove("hidden"));
+        }
+    });
 });
 
 function toggleSubmenu(event) {
