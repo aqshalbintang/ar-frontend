@@ -47,17 +47,6 @@ function toggleSubmenu(event) {
     }
 }
 
-function handleResizeSidebar() {
-    if (window.innerWidth <= 768) {
-        sidebar.classList.add('closed');
-    } else {
-        sidebar.classList.remove('closed');
-    }
-}
-
-window.addEventListener('resize', handleResizeSidebar);
-window.addEventListener('load', handleResizeSidebar);
-
 document.addEventListener("DOMContentLoaded", () => {
     const token = localStorage.getItem("token");
 
