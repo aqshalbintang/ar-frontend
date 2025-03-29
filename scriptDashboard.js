@@ -37,7 +37,7 @@ async function fetchData() {
         });
 
         if (!response.ok) {
-            throw new Error("Gagal mengambil data, kemungkinan sesi Anda telah berakhir.");
+            throw new Error("Gagal mengambil data.");
         }
 
         let user = await response.json();
@@ -53,12 +53,9 @@ async function fetchData() {
     } catch (error) {
         console.error("Error:", error);
 
-        alert("Sesi Anda telah berakhir. Anda akan diarahkan ke halaman awal...");
+        alert("Sesi Anda telah berakhir, silahkan login ulang.");
         localStorage.removeItem("token");
-
-        setTimeout(() => {
-            window.location.href = "/";
-        }, 1000);
+        window.location.href = "/";
     }
 }
 

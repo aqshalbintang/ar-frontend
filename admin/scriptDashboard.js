@@ -11,15 +11,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.querySelector(".sidebar");
     const toggleBtn = document.querySelector("#btn");
     const cardContents = document.querySelectorAll(".home-section .card > *:not(h2)");
-    
+
     if (window.innerWidth <= 768) {
         sidebar.classList.add("closed");
         cardContents.forEach(content => content.classList.remove("hidden"));
     }
-    
+
     toggleBtn.addEventListener("click", function () {
         sidebar.classList.toggle("closed");
-        
+
         if (window.innerWidth <= 768) {
             if (sidebar.classList.contains("closed")) {
                 cardContents.forEach(content => content.classList.remove("hidden"));
@@ -47,40 +47,36 @@ function toggleSubmenu(event) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-        console.log("Token tidak ditemukan, redirect ke login.");
+        alert("Token tidak ditemukan, silakan login.");
         window.location.href = "login.html";
         return;
     }
 
-    fetch(`${apiUrl}/api/admin/dashboard`, {
-        method: "GET",
-        headers: { "Authorization": `Bearer ${token}` }
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message === "Token tidak valid atau sudah kedaluwarsa") {
-                console.log("Token kadaluarsa, menghapus token...");
-                localStorage.removeItem("token");
-                alert("Sesi Anda telah habis, silakan login kembali.");
-                window.location.href = "login.html";
-            } else if (data.role !== "admin") {
-                console.log("Anda tidak memiliki akses sebagai admin.");
-                localStorage.removeItem("token");
-                alert("Akses hanya untuk admin.");
-                window.location.href = "index.html";
+    try {
+        let response = await fetch(`${apiUrl}/api/admin/dashboard`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
             }
-        })
-        .catch(error => {
-            console.log("Kesalahan saat verifikasi token:", error);
-            localStorage.removeItem("token");
-            window.location.href = "login.html";
         });
-});
 
+        if (!response.ok) {
+            throw new Error("Gagal mengambil data.");
+        }
+
+    } catch (error) {
+        console.error("Error:", error);
+
+        alert("Sesi Anda telah berakhir, silahkan login ulang.");
+        localStorage.removeItem("token");
+        window.location.href = "/admin/login.html";
+    }
+})
 
 document.addEventListener("DOMContentLoaded", () => {
     displayMarker();
