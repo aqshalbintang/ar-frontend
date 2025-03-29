@@ -1,5 +1,15 @@
 const apiUrl = "https://ar-backend-production.up.railway.app";
 
+window.addEventListener('DOMContentLoaded', function () {
+    const token = localStorage.getItem("token");
+    if (token) {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        if (decodedToken.role === "admin") {
+            window.location.href = "/admin/dashboard.html";
+        }
+    }
+});
+
 document.getElementById("loginForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const username = document.getElementById("username").value;

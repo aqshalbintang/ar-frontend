@@ -67,6 +67,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.removeItem("token");
                 alert("Sesi Anda telah habis, silakan login kembali.");
                 window.location.href = "login.html";
+            } else if (data.role !== "admin") {
+                console.log("Anda tidak memiliki akses sebagai admin.");
+                localStorage.removeItem("token");
+                alert("Akses hanya untuk admin.");
+                window.location.href = "index.html";
             }
         })
         .catch(error => {
@@ -75,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "login.html";
         });
 });
+
 
 document.addEventListener("DOMContentLoaded", () => {
     displayMarker();
