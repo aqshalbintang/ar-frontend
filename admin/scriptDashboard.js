@@ -323,7 +323,7 @@ function searchVisitors() {
     }
 
     const filteredVisitors = totalVisitors.filter(visitor =>
-        visitor.email.toLowerCase().includes(query)
+        visitor.name.toLowerCase().includes(query)
     );
 
     displayFilteredVisitors(filteredVisitors);
@@ -557,7 +557,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (savedSection) {
         showSection(savedSection, false);
     } else {
-        showSection("generate-marker", true);
+        showSection("dashboard-admin", true);
     }
 });
 

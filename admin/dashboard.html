@@ -18,7 +18,8 @@
             <i class='bx bx-menu' id="btn"></i>
         </div>
         <ul class="nav-list">
-            <li><a href="#" onclick="showSection('generate-marker')"><i class='bx bx-grid-alt'></i><span class="links_name">Dashboard</span></a></li>
+            <li><a href="#" onclick="showSection('dashboard-admin')"><i class='bx bx-home-alt'></i><span class="links_name">Dashboard</span></a></li>
+            <li><a href="#" onclick="showSection('generate-marker')"><i class='bx bx-qr'></i><span class="links_name">Generate</span></a></li>
             <li class="marker-menu">
                 <a href="#" onclick="toggleSubmenu(event)"><i class='bx bx-folder'></i><span class="links_name">Marker</span><i class='bx bx-chevron-down dropdown-icon'></i></a>
                 <ul class="submenu">
@@ -33,9 +34,16 @@
         </ul>
     </div>
 
-    <section class="home-section" id="generate-marker">
+    <section class="home-section" id="dashboard-admin">
         <div class="card">
             <h2>Dashboard</h2>
+            <p>Selamat Datang, Admin!</p>
+        </div>
+    </section>
+
+    <section class="home-section" id="generate-marker">
+        <div class="card">
+            <h2>Generate</h2>
                 <div class="input-container">
                     <label for="titleInput">Judul :</label>
                     <input type="text" id="titleInput" placeholder="Masukkan judul" class="input-field">
@@ -83,7 +91,7 @@
         
     <section class="home-section" id="marker-image">
         <div class="card">
-            <h2>Total Marker Image</h2>
+            <h2>Marker Image</h2>
             <div class="search-container">
             <input type="text" id="search-box-marker-image" placeholder="Masukkan judul...">
             <i class='bx bx-search'></i>
@@ -113,7 +121,7 @@
 
     <section class="home-section" id="marker-video">
         <div class="card">
-            <h2>Total Marker Video</h2>
+            <h2>Marker Video</h2>
             <div class="search-container">
             <input type="text" id="search-box-marker-video" placeholder="Masukkan judul...">
             <i class='bx bx-search'></i>
@@ -144,9 +152,9 @@
 
     <section class="home-section" id="total-visitor">
         <div class="card">
-            <h2>Total Visitor</h2>
+            <h2>Visitor</h2>
             <div class="search-container">
-            <input type="text" id="search-box-visitor" placeholder="Masukkan email...">
+            <input type="text" id="search-box-visitor" placeholder="Masukkan nama...">
             <i class='bx bx-search'></i>
             </div>
             <div class="table-container">
