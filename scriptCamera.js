@@ -129,7 +129,7 @@ function loadARContent(objectUrl, hasAudio, title, description, onDone) {
             video.setAttribute("src", objectUrl);
             video.setAttribute("width", "1");
             video.setAttribute("height", (1 / aspectRatio).toFixed(2));
-            video.setAttribute("position", "0 -0.2 -1");
+            video.setAttribute("position", "0 -0.15 -1");
             video.setAttribute("play-on-click", "");
             arContent.appendChild(video);
         };
@@ -151,7 +151,7 @@ function loadARContent(objectUrl, hasAudio, title, description, onDone) {
             image.setAttribute("src", objectUrl);
             image.setAttribute("width", "1");
             image.setAttribute("height", (1 / aspectRatio).toFixed(2));
-            image.setAttribute("position", "0 -0.2 -1");
+            image.setAttribute("position", "0 -0.15 -1");
             arContent.appendChild(image);
         };
     }
