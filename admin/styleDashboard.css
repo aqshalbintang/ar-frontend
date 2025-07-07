@@ -8,10 +8,10 @@
 }
 
 body {
-    display: flex;
-    height: 100vh;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
     background-color: #f4f4f4;
-    
 }
 
 h2 {
@@ -367,7 +367,7 @@ td .button-delete:hover {
 
 .home-section {
     position: relative;
-    background: #E4E9F7;
+    background-color: #f4f4f4;
     min-height: 100vh;
     top: 0;
     left: 250px;

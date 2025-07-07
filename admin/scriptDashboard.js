@@ -5,7 +5,7 @@ const rowsPerPage = 5;
 const rowsPerPageVisitor = 10;
 let totalMarker = [];
 let totalVisitors = [];
-const apiUrl = "https://ar-backend-production.up.railway.app";
+const apiUrl = "http://localhost:8080";
 
 document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.querySelector(".sidebar");
@@ -644,3 +644,75 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchVisitors();
     fetchMarkerCounts();
 });
+
+async function loadVisitorChart() {
+    try {
+        const res = await fetch(`${apiUrl}/api/chartvisitor`);
+        const data = await res.json();
+
+        const monthOrder = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+
+        const dataMap = {};
+        data.forEach(item => {
+            const monthName = monthNameFromId(item._id);
+            let total = item.total;
+            dataMap[monthName] = total;
+        });
+
+        const labels = [];
+        const counts = [];
+
+        monthOrder.forEach(month => {
+            labels.push(month);
+            counts.push(dataMap[month] || 0);
+        });
+
+        new Chart(document.getElementById('visitorChart'), {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Visitor',
+                    data: counts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        suggestedMin: 1,
+                        suggestedMax: 100,
+                        ticks: { stepSize: 10 }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    } catch (err) {
+        console.error('Gagal memuat chart pengunjung:', err);
+    }
+
+    function monthNameFromId(id) {
+        const monthNumber = id.split('-')[1];
+        const monthNames = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        return monthNames[parseInt(monthNumber, 10) - 1];
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadVisitorChart);

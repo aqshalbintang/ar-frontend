@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     try {
-        const response = await fetch("https://ar-backend-production.up.railway.app/api/targets");
+        const response = await fetch("http://localhost:8080/api/targets");
         const targets = await response.json();
 
         if (!targets || !Array.isArray(targets) || targets.length === 0) {
@@ -30,13 +30,17 @@ document.addEventListener("DOMContentLoaded", async function () {
                 marker.setAttribute("url", target.patternFileUrl);
 
                 marker.addEventListener("markerFound", () => {
-                    if (!arActive) {
-                        arActive = true;
-                        loadARContent(target.objectUrl, target.hasAudio, () => {
-                            ;
-                            arActive = false;
-                        });
-                    }
+                    if (arActive) return;
+
+                    arActive = true;
+
+                    loadARContent(
+                        target.objectUrl,
+                        target.hasAudio,
+                        target.title,
+                        target.description,
+                        () => { }
+                    );
                 });
 
                 scene.appendChild(marker);
@@ -67,7 +71,7 @@ AFRAME.registerComponent('play-on-click', {
     }
 });
 
-function loadARContent(objectUrl, hasAudio) {
+function loadARContent(objectUrl, hasAudio, title, description, onDone) {
     const arContent = document.getElementById("arContent");
     const closeButton = document.getElementById("closeButton");
     const backButton = document.getElementById("backButton");
@@ -79,6 +83,20 @@ function loadARContent(objectUrl, hasAudio) {
     overlay.style.display = "block";
 
     const arType = objectUrl.split(".").pop().toLowerCase();
+
+    const titleText = document.createElement("a-text");
+    titleText.setAttribute("value", "Judul : " + (title || "Judul"));
+    titleText.setAttribute("position", "0 0.55 -1");
+    titleText.setAttribute("align", "center");
+    titleText.setAttribute("width", "1");
+    arContent.appendChild(titleText);
+
+    const descText = document.createElement("a-text");
+    descText.setAttribute("value", "Deskripsi : " + (description || "Deskripsi"));
+    descText.setAttribute("position", "0 0.5 -1");
+    descText.setAttribute("align", "center");
+    descText.setAttribute("width", "0.7");
+    arContent.appendChild(descText);
 
     if (["mp4", "webm", "ogg"].includes(arType)) {
         const videoElement = document.createElement("video");
@@ -109,9 +127,9 @@ function loadARContent(objectUrl, hasAudio) {
             const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
             const video = document.createElement("a-video");
             video.setAttribute("src", objectUrl);
-            video.setAttribute("width", "1.25");
-            video.setAttribute("height", (1.25 / aspectRatio).toFixed(2));
-            video.setAttribute("position", "0 0 -1");
+            video.setAttribute("width", "1");
+            video.setAttribute("height", (1 / aspectRatio).toFixed(2));
+            video.setAttribute("position", "0 -0.1 -1");
             video.setAttribute("play-on-click", "");
             arContent.appendChild(video);
         };
@@ -131,15 +149,19 @@ function loadARContent(objectUrl, hasAudio) {
             const aspectRatio = img.naturalWidth / img.naturalHeight;
             const image = document.createElement("a-image");
             image.setAttribute("src", objectUrl);
-            image.setAttribute("width", "1.25");
-            image.setAttribute("height", (1.25 / aspectRatio).toFixed(2));
-            image.setAttribute("position", "0 0 -1");
+            image.setAttribute("width", "1");
+            image.setAttribute("height", (1 / aspectRatio).toFixed(2));
+            image.setAttribute("position", "0 -0.1 -1");
             arContent.appendChild(image);
         };
+    }
+    if (typeof onDone === "function") {
+        onDone();
     }
 }
 
 document.getElementById("closeButton").addEventListener("click", () => {
+    arActive = false;
     location.reload();
 });
 

@@ -7,8 +7,9 @@
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="styleDashboard.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src='vendor/threex-arpatternfile.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -18,16 +19,22 @@
             <i class='bx bx-menu' id="btn"></i>
         </div>
         <ul class="nav-list">
-            <li><a href="#" onclick="showSection('dashboard-admin')"><i class='bx bx-home-alt'></i><span class="links_name">Dashboard</span></a></li>
-            <li><a href="#" onclick="showSection('generate-marker')"><i class='bx bx-qr'></i><span class="links_name">Generate</span></a></li>
+            <li><a href="#" onclick="showSection('dashboard-admin')"><i class='bx bx-home-alt'></i><span
+                        class="links_name">Dashboard</span></a></li>
+            <li><a href="#" onclick="showSection('generate-marker')"><i class='bx bx-qr'></i><span
+                        class="links_name">Generate</span></a></li>
             <li class="marker-menu">
-                <a href="#" onclick="toggleSubmenu(event)"><i class='bx bx-folder'></i><span class="links_name">Marker</span><i class='bx bx-chevron-down dropdown-icon'></i></a>
+                <a href="#" onclick="toggleSubmenu(event)"><i class='bx bx-folder'></i><span
+                        class="links_name">Marker</span><i class='bx bx-chevron-down dropdown-icon'></i></a>
                 <ul class="submenu">
-                    <li><a href="#" onclick="showSection('marker-image')"><i class='bx bxs-image'></i><span class="links_name">Image</span></a></li>
-                    <li><a href="#" onclick="showSection('marker-video')"><i class='bx bxs-video'></i><span class="links_name">Video</span></a></li>
+                    <li><a href="#" onclick="showSection('marker-image')"><i class='bx bxs-image'></i><span
+                                class="links_name">Image</span></a></li>
+                    <li><a href="#" onclick="showSection('marker-video')"><i class='bx bxs-video'></i><span
+                                class="links_name">Video</span></a></li>
                 </ul>
             </li>
-            <li><a href="#" onclick="showSection('total-visitor')"><i class='bx bx-user'></i><span class="links_name">Visitor</span></a></li>
+            <li><a href="#" onclick="showSection('total-visitor')"><i class='bx bx-user'></i><span
+                        class="links_name">Visitor</span></a></li>
             <li class="logout">
                 <a href="#" onclick="logout()"><i class='bx bx-log-out'></i><span class="links_name">Logout</span></a>
             </li>
@@ -37,21 +44,21 @@
     <section class="home-section" id="dashboard-admin">
         <div class="card">
             <h2>Dashboard</h2>
-            <p>Selamat Datang, Admin!</p>
+            <canvas id="visitorChart" width="200" height="100"></canvas>
         </div>
     </section>
 
     <section class="home-section" id="generate-marker">
         <div class="card">
             <h2>Generate</h2>
-                <div class="input-container">
-                    <label for="titleInput">Judul :</label>
-                    <input type="text" id="titleInput" placeholder="Masukkan judul" class="input-field">
-            
-                    <label for="descriptionInput">Deskripsi :</label>
-                    <input type="text" id="descriptionInput" placeholder="Masukkan deskripsi" class="input-field">
-                </div>
-            
+            <div class="input-container">
+                <label for="titleInput">Judul :</label>
+                <input type="text" id="titleInput" placeholder="Masukkan judul" class="input-field">
+
+                <label for="descriptionInput">Deskripsi :</label>
+                <input type="text" id="descriptionInput" placeholder="Masukkan deskripsi" class="input-field">
+            </div>
+
             <div class="upload-container">
                 <div class="marker-section">
                     <label onclick="generateQR()" class='btn-generate'>
@@ -59,12 +66,13 @@
                     </label>
                     <div id='qrcode'></div>
                     <label id='buttonUploadMarker' for='fileinputMarker' class='btn'>
-                        <input type='file' id='fileinputMarker' style='display: none' accept='image/png,image/jpg,image/jpeg'>
+                        <input type='file' id='fileinputMarker' style='display: none'
+                            accept='image/png,image/jpg,image/jpeg'>
                         Upload Image
                     </label>
                     <div id='markerContainer'></div>
                 </div>
-    
+
                 <div class="object-section">
                     <label id='buttonUploadObject' for='fileinputObject' class='btn-upload'>
                         <input type='file' id='fileinputObject' style='display: none'
@@ -74,7 +82,7 @@
                     <div id='objectContainer'></div>
                 </div>
             </div>
-    
+
             <button id='buttonSubmit' class='btn'>
                 Submit
             </button>
@@ -82,19 +90,21 @@
             <div id="notes">Catatan :</br>
                 *Masukkan judul untuk menjelaskan nama object</br>
                 *Masukkan deskripsi untuk menjelaskan tentang object</br>
-                *Klik button <span style="font-weight: bold;">Generate QR</span> untuk membuat QR yang akan digunakan sebagai marker</br>
-                *Klik button <span style="font-weight: bold;">Upload Object</span> untuk memilih foto/video yang akan ditampilkan sebagai object</span></br>
+                *Klik button <span style="font-weight: bold;">Generate QR</span> untuk membuat QR yang akan digunakan
+                sebagai marker</br>
+                *Klik button <span style="font-weight: bold;">Upload Object</span> untuk memilih foto/video yang akan
+                ditampilkan sebagai object</span></br>
                 *Object yang diupload harus berukuran antara 500kb sampai 20mb
             </div>
         </div>
     </section>
-        
+
     <section class="home-section" id="marker-image">
         <div class="card">
             <h2>Marker Image</h2>
             <div class="search-container">
-            <input type="text" id="search-box-marker-image" placeholder="Masukkan judul...">
-            <i class='bx bx-search'></i>
+                <input type="text" id="search-box-marker-image" placeholder="Masukkan judul...">
+                <i class='bx bx-search'></i>
             </div>
             <div class="table-container">
                 <table class="data-table">
@@ -113,7 +123,7 @@
                 </table>
             </div>
             <div class="pagination">
-                <button id="prevButtonImage" class="page-btn" disabled><i class='bx bxs-chevrons-left' ></i></button>
+                <button id="prevButtonImage" class="page-btn" disabled><i class='bx bxs-chevrons-left'></i></button>
                 <p class="counter"><span id="imageCount"></span></p>
                 <button id="nextButtonImage" class="page-btn"><i class='bx bxs-chevrons-right'></i></button>
             </div>
@@ -123,8 +133,8 @@
         <div class="card">
             <h2>Marker Video</h2>
             <div class="search-container">
-            <input type="text" id="search-box-marker-video" placeholder="Masukkan judul...">
-            <i class='bx bx-search'></i>
+                <input type="text" id="search-box-marker-video" placeholder="Masukkan judul...">
+                <i class='bx bx-search'></i>
             </div>
             <div class="table-container">
                 <table class="data-table">
@@ -143,7 +153,7 @@
                 </table>
             </div>
             <div class="pagination">
-                <button id="prevButtonVideo" class="page-btn" disabled><i class='bx bxs-chevrons-left' ></i></button>
+                <button id="prevButtonVideo" class="page-btn" disabled><i class='bx bxs-chevrons-left'></i></button>
                 <p class="counter"><span id="videoCount"></span></p>
                 <button id="nextButtonVideo" class="page-btn"><i class='bx bxs-chevrons-right'></i></button>
             </div>
@@ -154,8 +164,8 @@
         <div class="card">
             <h2>Visitor</h2>
             <div class="search-container">
-            <input type="text" id="search-box-visitor" placeholder="Masukkan nama...">
-            <i class='bx bx-search'></i>
+                <input type="text" id="search-box-visitor" placeholder="Masukkan nama...">
+                <i class='bx bx-search'></i>
             </div>
             <div class="table-container">
                 <table class="data-table">
@@ -174,7 +184,7 @@
                 </table>
             </div>
             <div class="pagination">
-                <button id="prevPageVisitor" class="page-btn" disabled><i class='bx bxs-chevrons-left' ></i></button>
+                <button id="prevPageVisitor" class="page-btn" disabled><i class='bx bxs-chevrons-left'></i></button>
                 <p class="counter"><span id="visitorCount"></span></p>
                 <button id="nextPageVisitor" class="page-btn"><i class='bx bxs-chevrons-right'></i></button>
             </div>

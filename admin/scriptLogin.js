@@ -1,4 +1,4 @@
-const apiUrl = "https://ar-backend-production.up.railway.app";
+const apiUrl = "http://localhost:8080";
 
 window.addEventListener('DOMContentLoaded', function () {
     const token = localStorage.getItem("token");
