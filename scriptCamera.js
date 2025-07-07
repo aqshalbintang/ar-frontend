@@ -86,7 +86,7 @@ function loadARContent(objectUrl, hasAudio, title, description, onDone) {
 
     const titleText = document.createElement("a-text");
     titleText.setAttribute("value", "Judul : " + (title || "Judul"));
-    titleText.setAttribute("position", "0 0.2 -1");
+    titleText.setAttribute("position", "0 0.4 -1");
     titleText.setAttribute("align", "center");
     titleText.setAttribute("width", "1");
     arContent.appendChild(titleText);
