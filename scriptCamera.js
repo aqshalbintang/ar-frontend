@@ -95,7 +95,7 @@ function loadARContent(objectUrl, hasAudio, title, description, onDone) {
     descText.setAttribute("value", "Deskripsi : " + (description || "Deskripsi"));
     descText.setAttribute("position", "0 0.5 -1");
     descText.setAttribute("align", "center");
-    descText.setAttribute("width", "0.7");
+    descText.setAttribute("width", "1");
     arContent.appendChild(descText);
 
     if (["mp4", "webm", "ogg"].includes(arType)) {
