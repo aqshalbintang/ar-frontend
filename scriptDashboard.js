@@ -1,4 +1,4 @@
-const apiUrl = "http://localhost:8080";
+const apiUrl = "https://ar-backend-production.up.railway.app";
 
 document.getElementById('logoutBtn').addEventListener('click', function() {
     localStorage.removeItem('token');

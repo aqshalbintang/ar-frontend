@@ -5,7 +5,7 @@ const rowsPerPage = 5;
 const rowsPerPageVisitor = 10;
 let totalMarker = [];
 let totalVisitors = [];
-const apiUrl = "http://localhost:8080";
+const apiUrl = "https://ar-backend-production.up.railway.app";
 
 document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.querySelector(".sidebar");

@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     try {
-        const response = await fetch("http://localhost:8080/api/targets");
+        const response = await fetch("https://ar-backend-production.up.railway.app/api/targets");
         const targets = await response.json();
 
         if (!targets || !Array.isArray(targets) || targets.length === 0) {
