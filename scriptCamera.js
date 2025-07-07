@@ -95,7 +95,7 @@ function loadARContent(objectUrl, hasAudio, title, description, onDone) {
     descText.setAttribute("value", "Deskripsi : " + (description || "Deskripsi"));
     descText.setAttribute("position", "0 0.5 -1");
     descText.setAttribute("align", "center");
-    descText.setAttribute("width", "1");
+    descText.setAttribute("width", "0.8");
     arContent.appendChild(descText);
 
     if (["mp4", "webm", "ogg"].includes(arType)) {
@@ -129,7 +129,7 @@ function loadARContent(objectUrl, hasAudio, title, description, onDone) {
             video.setAttribute("src", objectUrl);
             video.setAttribute("width", "1");
             video.setAttribute("height", (1 / aspectRatio).toFixed(2));
-            video.setAttribute("position", "0 -0.1 -1");
+            video.setAttribute("position", "0 -0.2 -1");
             video.setAttribute("play-on-click", "");
             arContent.appendChild(video);
         };
@@ -151,7 +151,7 @@ function loadARContent(objectUrl, hasAudio, title, description, onDone) {
             image.setAttribute("src", objectUrl);
             image.setAttribute("width", "1");
             image.setAttribute("height", (1 / aspectRatio).toFixed(2));
-            image.setAttribute("position", "0 -0.1 -1");
+            image.setAttribute("position", "0 -0.2 -1");
             arContent.appendChild(image);
         };
     }
