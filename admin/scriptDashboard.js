@@ -80,6 +80,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     displayMarker();
+    document.getElementById("prevButtonImage").addEventListener("click", prevPageImage);
+    document.getElementById("nextButtonImage").addEventListener("click", nextPageImage);
+
+    document.getElementById("prevButtonVideo").addEventListener("click", prevPageVideo);
+    document.getElementById("nextButtonVideo").addEventListener("click", nextPageVideo);
 });
 
 function prevPageImage() {
@@ -277,7 +282,7 @@ function displayImageMarkers() {
     const paginatedImageData = imageData.slice(startIndex, endIndex);
 
     paginatedImageData.forEach((target, index) => {
-        imageTableBody.appendChild(createRow(target, index, false));
+        imageTableBody.appendChild(createRow(target, startIndex + index, false));
     });
 
     const prevButton = document.getElementById("prevButtonImage");
@@ -299,7 +304,7 @@ function displayVideoMarkers() {
     const paginatedVideoData = videoData.slice(startIndex, endIndex);
 
     paginatedVideoData.forEach((target, index) => {
-        videoTableBody.appendChild(createRow(target, index, true));
+        videoTableBody.appendChild(createRow(target, startIndex + index, true));
     });
 
     const prevButton = document.getElementById("prevButtonVideo");
