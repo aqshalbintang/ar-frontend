@@ -93,7 +93,7 @@ function loadARContent(objectUrl, hasAudio, title, description, onDone) {
 
     const descText = document.createElement("a-text");
     descText.setAttribute("value", "Deskripsi : " + (description || "Deskripsi"));
-    descText.setAttribute("position", "0 0.5 -1");
+    descText.setAttribute("position", "0 0.4 -1");
     descText.setAttribute("align", "center");
     descText.setAttribute("width", "0.8");
     arContent.appendChild(descText);
